@@ -26,7 +26,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     private int top;
 
     public StackWithListInArray( int capacity ) {
-        array =  new ListInArray(capacity);
+        array =  new ListInArray<>(capacity);
 	    this.capacity=capacity;
         this.top = EMPTY;
         
