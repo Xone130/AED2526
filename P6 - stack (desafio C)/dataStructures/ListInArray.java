@@ -94,7 +94,7 @@ public class ListInArray<E> implements List<E> {
         if(position == 0) return this.getFirst();
         if(position == counter - 1) return this.getLast();
         
-        return elems[position - 1];
+        return elems[position];
     }
 
     /**
@@ -143,7 +143,7 @@ public class ListInArray<E> implements List<E> {
     public void addLast(E element) {
         if(this.isFull()) this.extendArray();
         
-        elems[counter - 1] = element;
+        elems[counter] = element;
         counter++;
     }
 
@@ -158,11 +158,11 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public void add(int position, E element) {
-        if(!isPositionValid(position)) throw new InvalidPositionException();
+        if(!isPositionValidForAdd(position)) throw new InvalidPositionException();
         if(this.isFull()) this.extendArray();
 
         if(position == 0) this.addFirst(element);
-        else if(position == counter - 1) this.addLast(element);
+        else if(position == counter) this.addLast(element);
         else{
             for(int i = counter - 1; i >= position; i--) elems[i + 1] = elems[i]; //shift until position
 
@@ -217,8 +217,13 @@ public class ListInArray<E> implements List<E> {
         if(!this.isPositionValid(position)) throw new InvalidPositionException();
         if(position == 0) return this.removeFirst();
         if(position == counter - 1) return this.removeLast();
+        E removed = elems[position];
 
-        
+        for(int i = position + 1; i < counter; i++) elems[i - 1] = elems[i]; //shift left untill position;
+
+        elems[counter - 1] = null;
+        counter--;
+        return removed;
     }
 
     // ============== helpers ==============
@@ -226,6 +231,10 @@ public class ListInArray<E> implements List<E> {
 
     private boolean isPositionValid(int position){
         return position >= 0 && position <= counter - 1;
+    }
+
+        private boolean isPositionValidForAdd(int position){
+        return position >= 0 && position <= counter;
     }
 
     /**

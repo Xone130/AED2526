@@ -22,9 +22,14 @@ public class StackWithListInArray<E> implements Stack<E> {
     // capacity
     private int capacity;
 
+    //last elemet position
+    private int top;
+
     public StackWithListInArray( int capacity ) {
         array =  new ListInArray(capacity);
 	    this.capacity=capacity;
+        this.top = EMPTY;
+        
     }
 
     public StackWithListInArray( ) {
@@ -49,8 +54,7 @@ public class StackWithListInArray<E> implements Stack<E> {
      */
     @Override
     public int size() {
-        //TODO: Left as an exercise.
-	return 0;
+        return top + 1;
     }
 
     /**
@@ -62,8 +66,8 @@ public class StackWithListInArray<E> implements Stack<E> {
      */
     @Override
     public E top() {
-       //TODO: Left as an exercise.
-        return null;
+       if(this.isEmpty()) throw new EmptyStackException();
+       return array.get(top);
     }
 
     /**
@@ -75,7 +79,10 @@ public class StackWithListInArray<E> implements Stack<E> {
      */
     @Override
     public void push(E element) {
-        //TODO: Left as an exercise.
+        if(this.isFull()) throw new FullStackException();
+        
+        top++;
+        array.add(top, element);
     }
 
     
@@ -88,8 +95,21 @@ public class StackWithListInArray<E> implements Stack<E> {
      */
     @Override
     public E pop() {
-       //TODO: Left as an exercise.
+       if(this.isEmpty()) throw new EmptyStackException();
 
-        return null;
+       E element = array.get(top);
+       array.remove(top);
+       top--;
+       return element;
+    }
+
+    // ============== helpers ==============
+
+    /**
+     * 
+     * @return true if the size = capacity
+     */
+    private boolean isFull() {
+        return this.size() == capacity;
     }
 }

@@ -1,4 +1,6 @@
 package dataStructures;
+import dataStructures.exceptions.NoSuchElementException;
+
 /**
  * Array Iterator
  * @author AED  Team
@@ -19,19 +21,21 @@ class ArrayIterator<E> implements Iterator<E> {
     
     @Override
     public void rewind() {
-        //TODO: Left as an exercise.
+        current = 0;
     }
 
     @Override
     public boolean hasNext() {
-        //TODO: Left as an exercise.
-            return false;
+        return current < counter;
     }
 
     @Override
     public E next() {
-	//TODO: Left as an exercise.
-        return null;
+        if(!this.hasNext()) throw new NoSuchElementException();
+
+        E element = elems[current];
+        current++;
+        return element;
     }
 
 }
