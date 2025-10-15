@@ -248,6 +248,7 @@ public class ListInArray<E> implements List<E> {
     /**
      * extends the array using FACTOR
      */
+    @SuppressWarnings("unchecked")
     private void extendArray(){
         E[] newElems = (E[]) new Object[elems.length * FACTOR];
 
