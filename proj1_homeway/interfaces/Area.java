@@ -3,8 +3,12 @@
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 package interfaces;
+import java.io.Serializable;
 
-public interface Area {
+public interface Area extends Serializable {
   
   public String getName();
+
+  public void addServiceHere(Service newService);
+  
 }

@@ -5,12 +5,9 @@
 package interfaces;
 
 import dataStructures.*;
-import dataStructures.exceptions.BoundsExistException;
-import dataStructures.exceptions.InvalidBoundsException;
-import dataStructures.exceptions.StudentNotExistsException;
+import dataStructures.exceptions.*;
 import enums.ServiceType;
 import enums.StudentType;
-import java.net.UnknownServiceException;
 import records.Evaluation;
 
 public interface HomeWaySystem{
@@ -19,15 +16,15 @@ public interface HomeWaySystem{
    * TO DO: Save currentArea before anything else
    * where the " " becomes "_"
    * 
-   * @param top
-   * @param left
-   * @param bottom
-   * @param right
-   * @param areaName 
+   * @param top top point
+   * @param left left point
+   * @param bottom bottom point
+   * @param right right point
+   * @param areaName name of the area
    * @throws BoundsExistException if An area with the same name already exists (the current one or saved in a file)
    * @throws InvalidBoundsException if if the top latitude is lower than or equal to the bottom latitude and the right longitude is lower than or equal to the left longitude
    */
-  public void createNewArea(long top, long left, long bottom, long right, String areaName);
+  public void createNewArea(long top, long left, long bottom, long right, String areaName) throws BoundsExistException, InvalidBoundsException;
 
   /**
    * save current area to a text file 
@@ -37,26 +34,28 @@ public interface HomeWaySystem{
 
   /**
    * loads area into current Area from a file
-   * @param areaName 
+   * @param areaName name of the area
    * @throws NoFileException if there is no file in the root folder with the same name as the given area name
    */
-  public void loadArea(String areaName);
+  public void loadArea(String areaName) throws NoFileException;
 
   /**
    * ads service to currentArea
-   * @param serviceName 
+   * reminder to start with default evaluation of 4
+   * @param serviceName name of the service
    * @param value may be the capacity for eating and lodging services, and the student service discount for leisure service
-   * @param price 
-   * @param longitude 
-   * @param latitude 
-   * @param type 
+   * @param price price of the service
+   * @param longitude longitude
+   * @param latitude latitude
+   * @param type type of service
    * @throws InvalidLocationException If the service location is outside the bounding rectangle defined for the currentArea
    * @throws InvalidPriceException If the price is less or equal to 0
    * @throws InvalidDiscountException If it is a leisure service and the discount is less than 0 or greater than 100
    * @throws InvalidCapacityException If it is a eating or lodging service and the capacity is less or equal to 0
-   * @throws ServiceAlreadyExistsException If the service name already exists in the current geography area
+   * @throws ServiceExistsException If the service name already exists in the current geography area
    */
-  public void addServiceToCurrentArea(ServiceType type, long latitude, long longitude, int price, int value, String serviceName);
+  public void addServiceToCurrentArea(ServiceType type, long latitude, long longitude, int price, int value, String serviceName) throws 
+  InvalidLocationException, InvalidPriceException, InvalidDiscountException, InvalidCapacityException, ServiceExistsException;
 
   /**
    * 
@@ -65,55 +64,58 @@ public interface HomeWaySystem{
   public Iterator<Service> getServicesIterator();
 
   /**
-   * 
-   * @param type
-   * @param studentName
-   * @param country
-   * @param home
-   * @throws LodgingDoesNotExistException If the lodging does not exist in the currentArea
-   * @throws LodgingFullException If the lodging service is already full
+   * Adds a student to the currentArea
+   * @param type type of the student
+   * @param studentName name of the student
+   * @param country country where the student is from
+   * @param home lodging to become student's home
+   * @throws ServiceNotExistsException If the lodging does not exist in the currentArea
+   * @throws InvalidCapacityException If the lodging service is already full
    * @throws StudentExistsException If the student’s name already exists in the currentArea
    */
-  public void addStudentToCurrentArea(StudentType type, String studentName, String country, ServiceType home);
+  public void addStudentToCurrentArea(StudentType type, String studentName, String country, ServiceType home) throws ServiceNotExistsException, 
+InvalidCapacityException, StudentExistsException;
 
   /**
-   * 
-   * @param studentName
-   * @throws StudentNotExistsException If the student’s name does not exist in the system
+   * Removes a student from the currentArea
+   * @param studentName name of the student
+   * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    */
-  public void removeStudentFromCurrentArea(String studentName);
+  public void removeStudentFromCurrentArea(String studentName) throws StudentNotExistsException;
 
   /**
-   * 
+   * Lists all the students (if mode is "all") or those of a given country (otherwise)
    * @param mode "all" or <name of country>
    * @return an iterator with all students or those of a given country, defined by mode parameter
    */
   public Iterator<Student> getStudentsIterator(String mode);
 
   /**
-   * 
+   * Changes the location of a student to a eating service, or leisure service
    * @param studentName the name of the student
    * @param serviceName student's new home
-   * @throws UnknownServiceException If the name of the location where the student is going is not known to the currentArea
+   * @throws ServiceNotExistsException If the name of the location where the student is going is not known to the currentArea
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    * @throws InvalidServiceTypeException If the location where the student is going is not an eating or a leisure service
-   * @throws AlreadyThereException If the student decides to go to the location where they are already
-   * @throws ServiceFullException If is an eating service and it is already full
+   * @throws RedundantMoveException If the student decides to go to the location where they are already
+   * @throws InvalidCapacityException If is an eating service and it is already full
    */
-  public void goToLocation(String studentName, String serviceName);
+  public void goToLocation(String studentName, String serviceName) throws ServiceNotExistsException, StudentNotExistsException, 
+  InvalidServiceTypeException, RedundantMoveException, InvalidCapacityException;
 
   /**
    * Changes the home of a student 
    * Also changes student currentLocation to serviceName parameter
    * @param studentName the name of the student
    * @param serviceName student's new home
-   * @throws LodgingDoesNotExistException If the lodging service name does not exist in the currentArea
+   * @throws ServiceNotExistsException If the lodging service name does not exist in the currentArea
    * @throws StudentExistsException If the student’s name already exists in the currentArea
-   * @throws AlreadyStudentHomeException If the student’s home is already the one provided in the command
-   * @throws ServiceFullException If the lodging service is already full
+   * @throws RedundantMoveException If the student’s home is already the one provided in the command
+   * @throws InvalidCapacityException If the lodging service is already full
    * @throws ThriftyException If a thrifty student tries to move to a same price or more expensive lodging
    */
-  public void moveOut(String studentName, String serviceName);
+  public void moveOut(String studentName, String serviceName) throws ServiceNotExistsException, StudentExistsException, RedundantMoveException, 
+  InvalidCapacityException, ThriftyException;
 
   /**
    * Creates and returns an Iterator of users of a given service ordered bythe order parameter
@@ -123,32 +125,32 @@ public interface HomeWaySystem{
    * @throws ServiceNotExistsException If the service name does not exist in the currentArea
    * @throws InvalidServiceTypeException If the given service is neither eating nor lodging service
    */
-  public Iterator<Student> getUsersIterator(char order, String serviceName);
+  public Iterator<Student> getUsersIterator(char order, String serviceName) throws ServiceNotExistsException, InvalidServiceTypeException;
 
   /**
    * 
-   * @param studentName 
+   * @param studentName name of the student
    * @return service where student currently is
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    */
-  public Service getStudentLocation(String studentName);
+  public Service getStudentLocation(String studentName) throws StudentNotExistsException;
 
   /**
-   * 
-   * @param studentName 
+   * gets an iterator of the locations visited and stored by one student sorted by visiting order
+   * @param studentName name of the student
    * @return an iterator of the services visited by the given student sorted by visiting order
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    * @throws ThriftyException If the student is thrifty
    */
-  public Iterator<Service> getVisitedServicesIterator(String studentName);
+  public Iterator<Service> getVisitedServicesIterator(String studentName) throws StudentNotExistsException, ThriftyException;
 
   /**
-   * 
+   * Evaluates a service
    * @param serviceName the name of the service
    * @param evaluation (star, description)
    * @throws ServiceNotExistsException If the service’s name does not exist in the currentArea
    */
-  public void evaluateService(String serviceName, Evaluation evaluation);
+  public void evaluateService(String serviceName, Evaluation evaluation) throws ServiceNotExistsException;
 
   /**
    * 
@@ -157,16 +159,17 @@ public interface HomeWaySystem{
   public Iterator<Service> getServiceByEvaluationIterator();
 
   /**
-   * 
+   * Returns an iterator with  the service(s) of the indicated type with the given score that are closer to the student location
    * @param type ServiceType object or null
    * @param star evaluation
    * @return an iterator with  the service(s) of the indicated type with the given score that are closer to the student location (manhattan distance)
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    * @throws InvalidServiceTypeException If the service type is not ”eating”, ”lodging” or ”leisure” (to test this do if(type == null) throw InvalidServiceType)
-   * @throws NoServicesOfTypeException If no services of the type exist
-   * @throws NoServicesOfTypeWithStarException If no services of the type exist with n star average
+   * @throws ServiceNotExistsException If no services of the type exist
+   * @throws NoServicesOfTypeException If no services of the type exist with n star average
    */
-  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star);
+  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star) throws StudentNotExistsException, InvalidServiceTypeException, 
+  ServiceNotExistsException, NoServicesOfTypeException;
 
   /**
    * Returns an iterator with all the servies that have at least one evaluation description with given tag (case-insensitive, that is, ”Good” is the same 
@@ -181,13 +184,13 @@ public interface HomeWaySystem{
    * the system may provide the best service (with best average) of the type (for bookish and outgoing students)
    * or the less expensive one (for thrifty students). 
    * the system should provide the service with more time in this average or the first service inserted in the system, respectively
-   * @param studentName
-   * @param type
-   * @return
+   * @param studentName name of the student
+   * @param type type the service
+   * @return the best service (with best average) of the type (for bookish and outgoing students) OR the less expensive one (for thrifty students). 
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    * @throws NoServicesOfTypeException If no services of the type exist
    */
-  public Service findRelevantService(String studentName, ServiceType type);
+  public Service findRelevantService(String studentName, ServiceType type) throws StudentNotExistsException, NoServicesOfTypeException;
 
 
   /**
@@ -197,21 +200,20 @@ public interface HomeWaySystem{
   public Area getCurrentArea();
 
   /**
-   * public helper method
+   * public helper method.
    * @return true is currentArea != null
    */
   public boolean hasCurrentArea();
 
-
-  
-
-
-
-
-
-
-
-
+  /**
+   * public helper method.
+   * If the student is thrifty, and the command is moving their location to a eating service more expensive than the cheapest they have visited so far, 
+   * the student is distracted
+   * @param studentName name of the student
+   * @param serviceName name of the service
+   * @return true if the student is distracted
+   */
+  public boolean isStudentDistracted(String studentName, String serviceName);
 
 
 }

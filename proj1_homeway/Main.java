@@ -17,7 +17,6 @@ import classes.HomewaySystemClass;
 import interfaces.*;
 import records.Evaluation;
 
-import java.net.UnknownServiceException;
 import java.util.Scanner;
 
 public class Main {
@@ -112,14 +111,11 @@ public class Main {
         case WHERE -> cmd_where(hs, in);
         case VISITED -> cmd_visited(hs, in);
         case STAR -> cmd_star(hs, in);
-        case RANKING -> cmd_ranking(hs, in);
+        case RANKING -> cmd_ranking(hs);
         case RANKED -> cmd_ranked(hs, in);
         case TAG -> cmd_tag(hs, in);
         case FIND -> cmd_find(hs, in);
-        case UNKNOWN -> {
-                        System.out.println(UNKNOWN_COMMAND);
-                        in.nextLine();
-                        }
+        case UNKNOWN -> { System.out.println(UNKNOWN_COMMAND); in.nextLine(); }
       }
     }while (!cmd.equals(Command.EXIT));
 
@@ -194,7 +190,7 @@ public class Main {
         System.out.println(INVALID_DISCOUNT);
     } catch (InvalidCapacityException e) {
         System.out.println(INVALID_CAPACITY);
-    } catch (ServiceAlreadyExistsException e) {
+    } catch (ServiceExistsException e) {
       System.out.printf(SERVICE_ALREADY_EXISTS + "\n", serviceName);
     }
   }
@@ -228,9 +224,9 @@ public class Main {
     try {
       hs.addStudentToCurrentArea( type, studentName, country, home );
       System.out.printf(STUDENT_ADDED + "\n", studentName);
-    } catch (LodgingDoesNotExistException e) {
+    } catch (ServiceNotExistsException e) {
       System.out.printf(LODGING_NOT_EXIST + "\n", home);
-    } catch (LodgingFullException e) {
+    } catch (InvalidCapacityException e) {
       System.out.printf(LODGING_IS_FULL + "\n", home);
     } catch (StudentExistsException e){
       System.out.printf(STUDENT_ALREADY_EXISTS + "\n", studentName);
@@ -276,27 +272,17 @@ public class Main {
     try {
       hs.goToLocation(studentName, serviceName);
       System.out.printf(STUDENT_WENT_HERE, studentName, serviceName); //no new line here
+      if (hs.isStudentDistracted(studentName, serviceName)) System.out.printf(THRIFTY_DISTRACTED + "\n", studentName); //thrifty special case
 
-      //thrifty special case
-      Service service = hs.getService(serviceName);
-      Student student = hs.getStudent(studentName);
-
-      if(student.getType() == StudentType.THRIFTY &&
-        service.getType() == ServiceType.EATING && 
-        student.getCurrentCheapestEating().getPrice() < service.getPrice()){
-          System.out.printf(THRIFTY_DISTRACTED + "\n", studentName);
-          System.out.println();
-      }
-
-    } catch (UnknownServiceException e) {
+    } catch (ServiceNotExistsException e) {
       System.out.printf(UNKNOWN_SERVICE +"\n", serviceName);
     } catch (StudentNotExistsException e) {
       System.out.printf(STUDENT_NOT_EXISTS + "\n", studentName);
     } catch (InvalidServiceTypeException e){
       System.out.printf(NOT_EATING_LEISURE + "\n", serviceName);
-    } catch (AlreadyThereException e){
+    } catch (RedundantMoveException e){
       System.out.println(STUDENT_ALREADY_THERE);
-    } catch (ServiceFullException e){
+    } catch (InvalidCapacityException e){
       System.out.printf(EATING_IS_FULL + "\n", serviceName);
     }
   }
@@ -310,13 +296,13 @@ public class Main {
       hs.moveOut(studentName, serviceName);
       System.out.printf( STUDENT_MOVED + "\n", serviceName, studentName, studentName );
 
-    } catch (LodgingDoesNotExistException e) {
+    } catch (ServiceNotExistsException e) {
       System.out.printf(LODGING_NOT_EXIST + "\n", serviceName);
     } catch (StudentExistsException e){
       System.out.printf(STUDENT_ALREADY_EXISTS + "\n", studentName);
-    } catch (AlreadyStudentHomeException e) {
+    } catch (RedundantMoveException e) {
       System.out.printf(HOME_ALREADY_THAT + "\n", serviceName);
-    } catch (ServiceFullException e) {
+    } catch (InvalidCapacityException e) {
       System.out.printf(LODGING_IS_FULL + "\n", serviceName);
     } catch (ThriftyException e) {
       System.out.printf(THRIFTY_MOVE_ERROR + "\n", studentName);
@@ -399,7 +385,7 @@ public class Main {
 
   }
 
-  private static void cmd_ranking(HomeWaySystem hs, Scanner in) {
+  private static void cmd_ranking(HomeWaySystem hs) {
     if(!hasArea(hs)) return;
     
     Iterator<Service> services = hs.getServiceByEvaluationIterator();
@@ -435,9 +421,9 @@ public class Main {
       System.out.printf(STUDENT_NOT_EXISTS + "\n", studentName);
     } catch (InvalidServiceTypeException e){
       System.out.println(INVALID_SERVICE_TYPE);
-    } catch (NoServicesOfTypeException e){
+    } catch (ServiceNotExistsException e){
       System.out.printf(NO_SERVICES_OF_TYPE + "\n", type.toString().toLowerCase());
-    } catch (NoServicesOfTypeWithStarException e){
+    } catch (NoServicesOfTypeException e){
       System.out.printf(NO_SERVICES_OF_TYPE_STAR + "\n", type.toString().toLowerCase());
     }
   }

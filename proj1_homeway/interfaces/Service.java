@@ -17,5 +17,7 @@ public interface Service {
   public long getLongitude();
 
   public Evaluation getEvaluation();
+
+  public int getPrice();
   
 }
