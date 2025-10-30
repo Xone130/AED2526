@@ -3,7 +3,7 @@
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 package interfaces;
-import dataStructures.Iterator;
+import records.Evaluation;
 import dataStructures.TwoWayIterator;
 import enums.ServiceType;
 
@@ -40,6 +40,13 @@ public interface Service {
    * @param student student to be removed
    */
   public void removeStudentHere(Student student);
+
+  /**
+   * - adds an evaluation to the list of evaluations of this Service
+   * - recalculates average
+   * @param newEvaluation evaluation to be added
+   */
+  public void addEvaluation ( Evaluation newEvaluation );
 
   /**
    * checks if a student is here by name

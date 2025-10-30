@@ -417,7 +417,7 @@ public class Main {
     if(star < 1 || star > 5) { System.out.println(INVALID_EVALUATION); return;}
     try {
 
-      Iterator<Service> services = hs.getServiceOfTypeWithScore(type, star);
+      Iterator<Service> services = hs.getServiceOfTypeWithScore(type, star, studentName);
       System.out.printf(RANKED_HEADER + "\n", type.toString().toLowerCase(), star);
 
       Service current;

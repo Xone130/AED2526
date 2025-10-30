@@ -6,7 +6,6 @@ package classes.services;
 
 import enums.ServiceType;
 import interfaces.LeisureService;
-import interfaces.Student;
 
 public class LeisureClass extends ServiceClass implements LeisureService  {
 

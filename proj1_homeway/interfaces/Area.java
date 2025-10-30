@@ -7,6 +7,8 @@ import dataStructures.Iterator;
 import dataStructures.TwoWayIterator;
 import enums.ServiceType;
 import enums.StudentType;
+import records.Evaluation;
+
 import java.io.Serializable;
 
 public interface Area extends Serializable {
@@ -80,6 +82,23 @@ public interface Area extends Serializable {
    */
   public Iterator<Service> getStudentVisitedLocationsIterator(String studentName);
 
+  /** - gets an iterator of the list sorted by averages
+   * - For services with the same average, the order of printing should be the order by which the average was last updated by the service
+   * @return an iterator of the list sorted by averages
+   */
+  public Iterator<Service> getServicesByStarIterator();
+
+  /**
+   * - gets an iterator of the services of type with the given score closest to the student
+   * - first makes filterIterator of the type and with average
+   * - then finds the minimum distance and returns a second filteredIterator of services which distance equals minDistance
+   * @param type type of service
+   * @param star average
+   * @param studentName name of the student
+   * @return an iterator of the services of type with the given score closest to the student
+   */
+  public Iterator<Service> getServiceOfTypeWithScoreClosestIterator(ServiceType type, int star, String studentName);
+
   /**
    * adds a new service to this area
    * @param newService service to be added
@@ -114,6 +133,14 @@ public interface Area extends Serializable {
    * @param serviceName new home name
    */
   public void changeStudentHome(String studentName, String serviceName);
+
+  /**
+   * adds an evaluation to the service
+   * @param serviceName service to evaluate
+   * @param evaluation evaluation
+   */
+  public void evaluateService(String serviceName, Evaluation evaluation);
+
 
   /**
    * public helper method. 
@@ -158,7 +185,20 @@ public interface Area extends Serializable {
    */
   public boolean isthriftyServiceMoreExpensive(String studentName, String serviceName);
 
+  /**
+   * checks if there is any service of the given type in the currentArea
+   * @param type type of service  
+   * @return true if there is a service of the given type in the currentArea
+   */
+  public boolean hasServiceOfType(ServiceType type);
 
+  /**
+   * checks if there is any service of type in the currentArea with given average
+   * @param type type of service  
+   * @param average average to look for
+   * @return true if there is any service of type in the currentArea with given average
+   */
+  public boolean hasServiceOfTypeWithAverage(ServiceType type, int average);
 
 
 

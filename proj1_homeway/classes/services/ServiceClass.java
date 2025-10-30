@@ -8,7 +8,6 @@ import dataStructures.Iterator;
 import dataStructures.ListInArray;
 import dataStructures.TwoWayIterator;
 import dataStructures.TwoWayList;
-import dataStructures.List;
 import enums.ServiceType;
 import interfaces.Service;
 import interfaces.Student;
@@ -90,9 +89,21 @@ public abstract class ServiceClass implements Service {
   public void addStudentHere( Student newStudent ){
     studentsHere.addFirst(newStudent);
   }
+
   @Override
   public void removeStudentHere(Student student){
     studentsHere.remove(studentsHere.indexOf(student));
+  }
+
+  @Override
+  public void addEvaluation ( Evaluation newEvaluation ){
+    evaluations.addLast(newEvaluation);
+    this.updateAverage();
+  }
+
+  @Override
+  public TwoWayIterator<Student> getStudentsHereTwoWayIterator(){
+    return studentsHere.twoWayiterator();
   }
 
   @Override
@@ -107,9 +118,17 @@ public abstract class ServiceClass implements Service {
     return false;
   }
 
-  @Override
-  public TwoWayIterator<Student> getStudentsHereTwoWayIterator(){
-    return studentsHere.twoWayiterator();
+  // helpers ----------------------------------------------------
+
+  /** 
+   * updates currentAverage
+   */
+  private void updateAverage(){
+    Iterator<Evaluation> evals = evaluations.iterator();
+
+    int counter = 0;
+    while(evals.hasNext()){counter = counter + evals.next().star();}
+    this.currentAverage = Math.round( (float)counter / evaluations.size() );
   }
   
 }

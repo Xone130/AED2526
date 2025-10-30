@@ -14,6 +14,7 @@ import dataStructures.*;
 import enums.ServiceType;
 import enums.StudentType;
 import interfaces.*;
+import records.Evaluation;
 
 public class AreaClass implements Area {
 
@@ -41,7 +42,8 @@ public class AreaClass implements Area {
 
     this.servicesInThisArea = new DoublyLinkedList<>();
     this.studentsInThisArea = new DoublyLinkedList<>();
-    this.studentsByAlphabet = new SortedDoublyLinkedList<>((Student student1, Student student2) -> student1.getName().compareToIgnoreCase(student2.getName()));
+    this.studentsByAlphabet = new SortedDoublyLinkedList<>( (Student student1, Student student2) -> student1.getName().compareToIgnoreCase(student2.getName()) );
+    this.servicesByAverage = new SortedDoublyLinkedList<>( (Service service1, Service service2) -> Integer.compare(service2.getEvaluationAverage(), service1.getEvaluationAverage()) );
   }
 
   // getters, gets, adders & setters ---------------------------------------------------------------------------------------
@@ -102,13 +104,35 @@ public class AreaClass implements Area {
   }
 
   @Override
-  public Iterator<Service> getStudentVisitedLocationsIterator(String studentName) {
+  public Iterator<Service> getStudentVisitedLocationsIterator(String studentName) { // visited
     Student student = searchStudent(studentName);
 
     if(student.getType() == StudentType.OUTGOING) return ( (OutgoingStudent) student).getServicesVisitedIterator();
     return ( (BookishStudent) student).getLeisuresVisitedIterator();
   }
 
+  @Override
+  public Iterator<Service> getServicesByStarIterator() { // ranking
+    return servicesByAverage.iterator();
+  }
+
+  @Override
+  public Iterator<Service> getServiceOfTypeWithScoreClosestIterator(ServiceType type, int star, String studentName) { // ranked
+    Predicate<Service> typeAndAverage = service -> service.getType() == type && service.getEvaluationAverage() == star;
+    FilterIterator<Service> servicesByTypeWithAverage = new FilterIterator<>(servicesByAverage.iterator(), typeAndAverage); 
+    long minDistance = Long.MAX_VALUE;
+
+    Service current;
+    Student student = searchStudent(studentName);
+    while(servicesByTypeWithAverage.hasNext()){
+      current = servicesByTypeWithAverage.next();
+      long distance = this.manhattanDistance(current, student.getLocation());
+      if( minDistance > distance ) minDistance = distance;
+    }
+
+    FilterIterator<Service> s = new FilterIterator<>( servicesByTypeWithAverage, typeAndAverage) ; // ver que acho que este iterador ja acabou e ja n deve dar, devo ter de clonar iterador ou criar um novo do 0
+
+  }
 
   // command methods ---------------------------------------------------------------------------------------
   
@@ -146,9 +170,16 @@ public class AreaClass implements Area {
   }
 
   @Override
-  public void changeStudentHome(String studentName, String serviceName) {
+  public void changeStudentHome(String studentName, String serviceName) { // move
     searchStudent(studentName).setHome( ( (LodgingService) searchService(serviceName)) );
     changeStudentLocation(studentName, serviceName);
+  }
+
+  @Override
+  public void evaluateService(String serviceName, Evaluation evaluation) { // star
+    Service service = searchService(serviceName);
+    service.addEvaluation(evaluation);
+    this.updateServicesByAverage(service);
   }
 
   // verification methods  ---------------------------------------------------------------------------------------
@@ -185,6 +216,28 @@ public class AreaClass implements Area {
   @Override
   public boolean isthriftyServiceMoreExpensive(String studentName, String serviceName){
     return ( (ThriftyStudent) searchStudent(studentName)).isMoreExpensiveThanCurrent(searchService(serviceName));
+  }
+
+  @Override
+  public boolean hasServiceOfType(ServiceType type) {
+    Iterator<Service> services = servicesInThisArea.iterator();
+
+    while(services.hasNext()){
+      if(services.next().getType() == type) return true;
+    }
+    return false;
+  }
+
+  @Override
+  public boolean hasServiceOfTypeWithAverage(ServiceType type, int average) {
+    Iterator<Service> services = servicesByAverage.iterator();
+
+    Service current;
+    while(services.hasNext()){
+      current = services.next();
+      if(current.getType() == type && current.getEvaluationAverage() == average) return true;
+    }
+    return false;
   }
 
 
@@ -280,5 +333,20 @@ public class AreaClass implements Area {
     student.setLocation(newLocation);
   }
 
-  
+  private void updateServicesByAverage(Service service) {
+
+    servicesByAverage.remove(service);
+    servicesByAverage.add(service);
+  }
+
+  /**
+   * gets the manhattan distance between the two services
+   * @param service1 1st service
+   * @param service2 2nd service
+   * @return the manhattan distance between the two services
+   */
+  private long manhattanDistance(Service service1, Service service2){
+    return (Math.abs(service1.getLatitude() - service2.getLatitude()) + Math.abs(service1.getLongitude() - service2.getLongitude()));
+  }
+
 }

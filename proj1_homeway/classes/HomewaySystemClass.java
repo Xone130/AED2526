@@ -140,7 +140,7 @@ public class HomewaySystemClass implements HomeWaySystem {
   @Override
   public void moveOut(String studentName, String serviceName) throws ServiceNotExistsException, StudentExistsException,
     RedundantMoveException, InvalidCapacityException, ThriftyException {
-    if( !(currentArea.hasService(serviceName)) || currentArea.getServiceType(serviceName) != ServiceType.LODGING ) throw new ServiceNotExistsException();
+    if( !(currentArea.hasService(serviceName) )) if( currentArea.getServiceType(serviceName) != ServiceType.LODGING ) throw new ServiceNotExistsException();
     if(currentArea.hasStudent(studentName)) throw new StudentExistsException();
     if(currentArea.getStudentHome(studentName).getName().equals(serviceName)) throw new RedundantMoveException();
     if(currentArea.isServiceFull(serviceName)) throw new InvalidCapacityException();
@@ -176,21 +176,25 @@ public class HomewaySystemClass implements HomeWaySystem {
 
   @Override
   public void evaluateService(String serviceName, Evaluation evaluation) throws ServiceNotExistsException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'evaluateService'");
+    if( !(currentArea.hasService(serviceName) )) throw new ServiceNotExistsException();
+
+    currentArea.evaluateService(serviceName, evaluation);
   }
 
   @Override
   public Iterator<Service> getServiceByEvaluationIterator() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getServiceByEvaluationIterator'");
+    return currentArea.getServicesByStarIterator();
   }
 
   @Override
-  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star) throws StudentNotExistsException,
-      InvalidServiceTypeException, ServiceNotExistsException, NoServicesOfTypeException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getServiceOfTypeWithScore'");
+  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star, String studentName) throws StudentNotExistsException,
+    InvalidServiceTypeException, ServiceNotExistsException, NoServicesOfTypeException {
+    if(!currentArea.hasStudent(studentName)) throw new StudentNotExistsException();
+    if(type != ServiceType.EATING && type != ServiceType.LEISURE && type != ServiceType.LODGING) throw new InvalidServiceTypeException();
+    if(!currentArea.hasServiceOfType(type)) throw new ServiceNotExistsException();
+    if(!currentArea.hasServiceOfTypeWithAverage(type, star)) throw new NoServicesOfTypeException();
+
+    return currentArea.getServiceOfTypeWithScoreClosestIterator(type, star, studentName);
   }
 
   @Override
@@ -258,5 +262,7 @@ public class HomewaySystemClass implements HomeWaySystem {
     File file = new File(fileName);
     return file.exists();
   }
+
+
 
 }

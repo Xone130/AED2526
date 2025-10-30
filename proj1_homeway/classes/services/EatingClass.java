@@ -6,7 +6,6 @@ package classes.services;
 
 import enums.ServiceType;
 import interfaces.EatingService;
-import interfaces.Student;
 
 public class EatingClass extends ServiceClass implements EatingService {
 

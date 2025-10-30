@@ -162,13 +162,14 @@ InvalidCapacityException, StudentExistsException;
    * Returns an iterator with  the service(s) of the indicated type with the given score that are closer to the student location
    * @param type ServiceType object or null
    * @param star evaluation
+   * @param studentName name of the student
    * @return an iterator with  the service(s) of the indicated type with the given score that are closer to the student location (manhattan distance)
    * @throws StudentNotExistsException If the student’s name does not exist in the currentArea
    * @throws InvalidServiceTypeException If the service type is not ”eating”, ”lodging” or ”leisure” (to test this do if(type == null) throw InvalidServiceType)
    * @throws ServiceNotExistsException If no services of the type exist
    * @throws NoServicesOfTypeException If no services of the type exist with n star average
    */
-  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star) throws StudentNotExistsException, InvalidServiceTypeException, 
+  public Iterator<Service> getServiceOfTypeWithScore(ServiceType type, int star, String studentName) throws StudentNotExistsException, InvalidServiceTypeException, 
   ServiceNotExistsException, NoServicesOfTypeException;
 
   /**

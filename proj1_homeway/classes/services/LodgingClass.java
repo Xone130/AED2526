@@ -7,7 +7,6 @@ package classes.services;
 
 import enums.ServiceType;
 import interfaces.LodgingService;
-import interfaces.Student;
 
 public class LodgingClass extends ServiceClass implements LodgingService {
 
