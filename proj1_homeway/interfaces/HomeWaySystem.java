@@ -68,12 +68,12 @@ public interface HomeWaySystem{
    * @param type type of the student
    * @param studentName name of the student
    * @param country country where the student is from
-   * @param home lodging to become student's home
+   * @param home lodging name to become student's home
    * @throws ServiceNotExistsException If the lodging does not exist in the currentArea
    * @throws InvalidCapacityException If the lodging service is already full
    * @throws StudentExistsException If the student’s name already exists in the currentArea
    */
-  public void addStudentToCurrentArea(StudentType type, String studentName, String country, ServiceType home) throws ServiceNotExistsException, 
+  public void addStudentToCurrentArea(StudentType type, String studentName, String country, String home) throws ServiceNotExistsException, 
 InvalidCapacityException, StudentExistsException;
 
   /**

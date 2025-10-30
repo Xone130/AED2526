@@ -9,8 +9,20 @@ public interface Student {
 
   public String getName();
 
+  public String getCountry();
+
   public StudentType getType();
 
-  public String getHome();
+  public LodgingService getHome();
+
+  public Service getLocation();
+
+  public void setHome(LodgingService newHome);
+
+  /**
+   * alters the location of a student to newLocation
+   * @param newLocation newLocation
+   */
+  public void setLocation(Service newLocation);
   
 }

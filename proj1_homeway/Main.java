@@ -7,7 +7,6 @@
  * TO DO: mudar condicao dos thrifty cmd_go 
  * 
  * TO DO: mudar latitude e longitude para record Point (e bounds)
- * TO DO: reminder that created services start with evaluation of 4 by default
  */
 
 import dataStructures.*;
@@ -149,7 +148,7 @@ public class Main {
     if(!hasArea(hs)) return;
 
     hs.saveCurrentArea();
-    System.out.printf(AREA_SAVED + "\n", hs.getCurrentArea().getName());
+    System.out.printf(AREA_SAVED + "\n", hs.getCurrentArea().getAreaName());
   }
 
   private static void cmd_load(HomeWaySystem hs, Scanner in) {
@@ -215,7 +214,7 @@ public class Main {
     StudentType type = getStudentType(in.nextLine().trim());
     String studentName = in.nextLine().trim();
     String country = in.nextLine().trim();
-    ServiceType home = getServiceType(in.nextLine().trim());
+    String home = in.nextLine();
 
     if(!hasArea(hs)) return;
     if (type == null) { System.out.println(INVALID_STUDENT_TYPE); return; }
@@ -258,7 +257,7 @@ public class Main {
         Student current;
         while(students.hasNext()) {
           current = students.next();
-          System.out.printf(LIST_STUDENTS + "\n", current.getName(), current.getType().toString().toLowerCase(), current.getHome());
+          System.out.printf(LIST_STUDENTS + "\n", current.getName(), current.getType().toString().toLowerCase(), current.getHome().getName());
         }
       }
       
@@ -395,7 +394,7 @@ public class Main {
     Service current;
     while(services.hasNext()) {
       current = services.next();
-      System.out.printf(LIST_RANKING + "\n", current.getName(), current.getEvaluation().star());
+      System.out.printf(LIST_RANKING + "\n", current.getName(), current.getEvaluationAverage());
     }
   }
 

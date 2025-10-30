@@ -4,7 +4,6 @@
 */
 package interfaces;
 import enums.ServiceType;
-import records.Evaluation;
 
 public interface Service {
 
@@ -16,8 +15,36 @@ public interface Service {
 
   public long getLongitude();
 
-  public Evaluation getEvaluation();
+  public int getEvaluationAverage();
 
   public int getPrice();
+
+  public int getValue();
+
+  /**
+   * the number of studends currently in this service
+   * @return the number of studends currently in this service
+   */
+  public int getNumberOfStudentsHere();
+
+  /**
+   * adds a student currently in this service
+   * @param newStudent student to be added
+   */
+  public void addStudentHere( Student newStudent );
+
+  /**
+   * removes a student from this service
+   * @param student student to be removed
+   */
+  public void removeStudentHere(Student student);
+
+  /**
+   * checks if a student is here by name
+   * @param studentName the name of the student to be searched for
+   * @return true if the student is here, false otherwise
+   */
+  public boolean isStudentHere(String studentName);
+
   
 }
