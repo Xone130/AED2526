@@ -118,20 +118,27 @@ public class AreaClass implements Area {
 
   @Override
   public Iterator<Service> getServiceOfTypeWithScoreClosestIterator(ServiceType type, int star, String studentName) { // ranked
-    Predicate<Service> typeAndAverage = service -> service.getType() == type && service.getEvaluationAverage() == star;
-    FilterIterator<Service> servicesByTypeWithAverage = new FilterIterator<>(servicesByAverage.iterator(), typeAndAverage); 
+    // creates filtered iterator by type & average
+    Predicate<Service> typeAndAverageFilter = service -> service.getType() == type && service.getEvaluationAverage() == star;
+    FilterIterator<Service> servicesByTypeWithAverage = new FilterIterator<>(servicesByAverage.iterator(), typeAndAverageFilter); 
+    List<Service> validServices = new DoublyLinkedList<>();
     long minDistance = Long.MAX_VALUE;
+    Service studentLocation = searchStudent(studentName).getLocation();
 
+    // finds minimum distance 
     Service current;
-    Student student = searchStudent(studentName);
     while(servicesByTypeWithAverage.hasNext()){
       current = servicesByTypeWithAverage.next();
-      long distance = this.manhattanDistance(current, student.getLocation());
+      long distance = this.manhattanDistance(current, studentLocation);
+
+      validServices.addLast(current);
       if( minDistance > distance ) minDistance = distance;
     }
 
-    FilterIterator<Service> s = new FilterIterator<>( servicesByTypeWithAverage, typeAndAverage) ; // ver que acho que este iterador ja acabou e ja n deve dar, devo ter de clonar iterador ou criar um novo do 0
-
+    // returns iterator with services minDistance away from the student 
+    final long minDistanceFinal = minDistance;
+    Predicate<Service> minDistanceFilter = service -> manhattanDistance(service, studentLocation) == minDistanceFinal;
+    return new FilterIterator<>( validServices.iterator(), minDistanceFilter); 
   }
 
   // command methods ---------------------------------------------------------------------------------------
