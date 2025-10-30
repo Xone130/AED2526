@@ -51,6 +51,7 @@ public abstract class StudentClass implements Student {
     return location;
   }
 
+  @Override
   public void setHome(LodgingService newHome){
     this.home = newHome;
   }

@@ -3,6 +3,8 @@
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 package interfaces;
+import dataStructures.Iterator;
+import dataStructures.TwoWayIterator;
 import enums.ServiceType;
 
 public interface Service {
@@ -46,5 +48,9 @@ public interface Service {
    */
   public boolean isStudentHere(String studentName);
 
-  
+  /**
+   * gets a TwoWayIterator of the students in this service (used in users command for reverse order)
+   * @return a TwoWayIterator of the students in this service
+   */
+  public TwoWayIterator<Student> getStudentsHereTwoWayIterator();
 }

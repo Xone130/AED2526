@@ -4,6 +4,7 @@
 */
 package interfaces;
 import dataStructures.Iterator;
+import dataStructures.TwoWayIterator;
 import enums.ServiceType;
 import enums.StudentType;
 import java.io.Serializable;
@@ -46,6 +47,40 @@ public interface Area extends Serializable {
   public LodgingService getStudentHome(String studentName);
 
   /**
+   * gets an iterator with the services in this area by insertion order
+   * @return an iterator with the services in this area by insertion order
+   */
+  public Iterator<Service> getServicesIterator();
+
+  /**
+   * gets an iterator with the students in this area by alphabetical order
+   * @return an iterator with the students in this area by alphabetical order
+   */
+  public Iterator<Student> getStudentsByAlphabetIterator();
+
+  /**
+   * gets an iterator with the students in this area of this country by 
+   * @param country string country
+   * @return an iterator with the students in this area of this country by 
+   */
+  public Iterator<Student> getStudentsByCountryIterator(String country);
+
+  /**
+   * - ">" : from oldest to newest based n insertion order
+   * - "<" : from newest to oldest based on insertion order into service
+   * @param order order list according to this
+   * @param serviceName name of the service
+   */
+  public TwoWayIterator<Student> getStudentsInServiceIterator(char order, String serviceName);
+
+  /**
+   * gets an iterator with the student's visited locations
+   * @param studentName name of the student
+   * @return an iterator with the student's visited locations
+   */
+  public Iterator<Service> getStudentVisitedLocationsIterator(String studentName);
+
+  /**
    * adds a new service to this area
    * @param newService service to be added
    */
@@ -79,25 +114,6 @@ public interface Area extends Serializable {
    * @param serviceName new home name
    */
   public void changeStudentHome(String studentName, String serviceName);
-
-  /**
-   * gets an iterator with the services in this area by insertion order
-   * @return an iterator with the services in this area by insertion order
-   */
-  public Iterator<Service> getServicesIterator();
-
-  /**
-   * gets an iterator with the students in this area by alphabetical order
-   * @return an iterator with the students in this area by alphabetical order
-   */
-  public Iterator<Student> getStudentsByAlphabetIterator();
-
-  /**
-   * gets an iterator with the students in this area of this country by 
-   * @param country string country
-   * @return an iterator with the students in this area of this country by 
-   */
-  public Iterator<Student> getStudentsByCountryIterator(String country);
 
   /**
    * public helper method. 
@@ -141,7 +157,6 @@ public interface Area extends Serializable {
    * @return true if is more expensive than students saved currentCheapest
    */
   public boolean isthriftyServiceMoreExpensive(String studentName, String serviceName);
-
 
 
 

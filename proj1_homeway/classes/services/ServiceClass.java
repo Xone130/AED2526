@@ -6,6 +6,8 @@ package classes.services;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import dataStructures.ListInArray;
+import dataStructures.TwoWayIterator;
+import dataStructures.TwoWayList;
 import dataStructures.List;
 import enums.ServiceType;
 import interfaces.Service;
@@ -25,7 +27,7 @@ public abstract class ServiceClass implements Service {
 
   private int currentAverage;
   private ListInArray<Evaluation> evaluations;
-  private List<Student> studentsHere;
+  private TwoWayList<Student> studentsHere;
 
 
   public ServiceClass( ServiceType type, long latitude, long longitude, int price, int value, String serviceName ){
@@ -103,6 +105,11 @@ public abstract class ServiceClass implements Service {
       if(current.getName().equals(studentName)) return true;
     }
     return false;
+  }
+
+  @Override
+  public TwoWayIterator<Student> getStudentsHereTwoWayIterator(){
+    return studentsHere.twoWayiterator();
   }
   
 }

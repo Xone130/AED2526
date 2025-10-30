@@ -69,7 +69,7 @@ public class AreaClass implements Area {
 
   @Override
   public Service getStudentLocation(String studentName) {
-    return  searchStudent(studentName).getLocation();
+    return searchStudent(studentName).getLocation();
   }
 
   @Override
@@ -83,7 +83,7 @@ public class AreaClass implements Area {
   }
 
   @Override
-  public Iterator<Student> getStudentsByCountryIterator(String country) { // students
+  public Iterator<Student> getStudentsByCountryIterator(String country) { // students 
     List<Student> studentsByCountry = new DoublyLinkedList<>();
     Iterator<Student> students = studentsInThisArea.iterator();
 
@@ -95,6 +95,20 @@ public class AreaClass implements Area {
 
     return studentsByCountry.iterator();
   }
+
+  @Override
+  public TwoWayIterator<Student> getStudentsInServiceIterator(char order, String serviceName) { // users
+    return searchService(serviceName).getStudentsHereTwoWayIterator();
+  }
+
+  @Override
+  public Iterator<Service> getStudentVisitedLocationsIterator(String studentName) {
+    Student student = searchStudent(studentName);
+
+    if(student.getType() == StudentType.OUTGOING) return ( (OutgoingStudent) student).getServicesVisitedIterator();
+    return ( (BookishStudent) student).getLeisuresVisitedIterator();
+  }
+
 
   // command methods ---------------------------------------------------------------------------------------
   

@@ -16,7 +16,7 @@ import interfaces.Service;
 
 public class BookishClass extends StudentClass implements BookishStudent {
 
-  private List<LeisureService> leisuresVisisted;
+  private List<Service> leisuresVisisted;
 
   public BookishClass(StudentType type, String studentName, String country, LodgingService home) {
     super(type, studentName, country, home);
@@ -25,7 +25,7 @@ public class BookishClass extends StudentClass implements BookishStudent {
   }
 
   @Override
-  public Iterator<LeisureService> getLeisuresVisitedIterator() {
+  public Iterator<Service> getLeisuresVisitedIterator() {
     return leisuresVisisted.iterator();
   }
 
@@ -41,9 +41,9 @@ public class BookishClass extends StudentClass implements BookishStudent {
 
 
   private boolean listContains(LeisureService service){
-    Iterator<LeisureService> it = leisuresVisisted.iterator();
+    Iterator<Service> it = leisuresVisisted.iterator();
 
-    LeisureService current;
+    Service current;
     while(it.hasNext()){
       current = it.next();
       if(service.getName().equals(current.getName())) return true;

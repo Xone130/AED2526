@@ -118,14 +118,14 @@ InvalidCapacityException, StudentExistsException;
   InvalidCapacityException, ThriftyException;
 
   /**
-   * Creates and returns an Iterator of users of a given service ordered bythe order parameter
+   * Creates and returns a TwoWayIterator of users in a service
    * @param order > - from oldest to newest based on on insertion order || < - from newest to oldest based on insertion order into service
    * @param serviceName the name of the service
-   * @return an Iterator of users of a given service ordered bythe order parameter
+   * @return an Iterator of users of a given service ordered by insertion order 
    * @throws ServiceNotExistsException If the service name does not exist in the currentArea
    * @throws InvalidServiceTypeException If the given service is neither eating nor lodging service
    */
-  public Iterator<Student> getUsersIterator(char order, String serviceName) throws ServiceNotExistsException, InvalidServiceTypeException;
+  public TwoWayIterator<Student> getUsersIterator(char order, String serviceName) throws ServiceNotExistsException, InvalidServiceTypeException;
 
   /**
    * 

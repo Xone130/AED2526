@@ -8,6 +8,7 @@ import classes.students.BookishClass;
 import classes.students.OutgoingClass;
 import classes.students.ThriftyClass;
 import dataStructures.Iterator;
+import dataStructures.TwoWayIterator;
 import dataStructures.exceptions.*;
 import enums.ServiceType;
 import enums.StudentType;
@@ -103,7 +104,8 @@ public class HomewaySystemClass implements HomeWaySystem {
   public void addStudentToCurrentArea(StudentType type, String studentName, String country, String home)
     throws ServiceNotExistsException, InvalidCapacityException, StudentExistsException {
     
-    if( !(currentArea.hasService(home)) || currentArea.getServiceType(home) != ServiceType.LODGING ) throw new ServiceNotExistsException();
+    if( !(currentArea.hasService(home)) ) throw new ServiceNotExistsException();
+    if( currentArea.getServiceType(home) != ServiceType.LODGING  ) throw new ServiceNotExistsException();
     if(currentArea.isServiceFull(home)) throw new InvalidCapacityException();
     if(currentArea.hasStudent(studentName)) throw new StudentExistsException();
 
@@ -148,23 +150,28 @@ public class HomewaySystemClass implements HomeWaySystem {
   }
 
   @Override
-  public Iterator<Student> getUsersIterator(char order, String serviceName)
+  public TwoWayIterator<Student> getUsersIterator(char order, String serviceName)
       throws ServiceNotExistsException, InvalidServiceTypeException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUsersIterator'");
+    if( !currentArea.hasService(serviceName) ) throw new ServiceNotExistsException();
+    if( currentArea.getServiceType(serviceName) != ServiceType.LODGING && currentArea.getServiceType(serviceName) != ServiceType.EATING ) throw new InvalidServiceTypeException();
+
+    return currentArea.getStudentsInServiceIterator(order, serviceName);
   }
 
   @Override
   public Service getStudentLocation(String studentName) throws StudentNotExistsException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getStudentLocation'");
+    if(!currentArea.hasStudent(studentName)) throw new StudentNotExistsException();
+
+    return currentArea.getStudentLocation(studentName);
   }
 
   @Override
   public Iterator<Service> getVisitedServicesIterator(String studentName)
-      throws StudentNotExistsException, ThriftyException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getVisitedServicesIterator'");
+    throws StudentNotExistsException, ThriftyException {
+    if(!currentArea.hasStudent(studentName)) throw new StudentNotExistsException();
+    if(currentArea.getStudentType(studentName) == StudentType.THRIFTY) throw new ThriftyException();
+
+    return currentArea.getStudentVisitedLocationsIterator(studentName);
   }
 
   @Override

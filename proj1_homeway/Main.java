@@ -4,8 +4,7 @@
 */
 
 /**
- * TO DO: mudar condicao dos thrifty cmd_go 
- * 
+ * TO DO: change students command in AreaClass to use FilterIterator
  * TO DO: mudar latitude e longitude para record Point (e bounds)
  */
 
@@ -316,15 +315,26 @@ public class Main {
     if( !(order == '<' || order == '>') ) { System.out.println(ORDER_NOT_EXIST); return; }
     
     try {
-      Iterator<Student> students = hs.getUsersIterator(order, serviceName);
-      if(!students.hasNext()) {System.out.printf(SERVICE_EMPTY + "\n", serviceName); return;}
+      TwoWayIterator<Student> students = hs.getUsersIterator(order, serviceName);
+
+      if(order == '<'){
+        if(!students.hasNext()) {System.out.printf(SERVICE_EMPTY + "\n", serviceName); return;}
 
         Student current;
         while(students.hasNext()){
           current = students.next();
           System.out.printf(LIST_USERS + "\n", current.getName(), current.getType().toString().toLowerCase());
         }
+      }else{
+        students.fullForward();
+        if(!students.hasPrevious()) {System.out.printf(SERVICE_EMPTY + "\n", serviceName); return;}
 
+        Student current;
+        while(students.hasPrevious()){
+          current = students.previous();
+          System.out.printf(LIST_USERS + "\n", current.getName(), current.getType().toString().toLowerCase());
+        }
+      }
     } catch (ServiceNotExistsException e) {
       System.out.printf(SERVICE_NOT_EXISTS + "\n", serviceName);
     } catch (InvalidServiceTypeException e) {

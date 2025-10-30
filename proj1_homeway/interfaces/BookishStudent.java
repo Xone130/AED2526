@@ -9,10 +9,10 @@ import dataStructures.Iterator;
 public interface BookishStudent extends Student {
   
   /**
-   * gets an iterator with the visited Leisures
-   * @return an iterator with the visited Leisures
+   * gets an iterator with the visited Leisure Services
+   * @return an iterator with the visited Leisure Services
    */
-  public Iterator<LeisureService> getLeisuresVisitedIterator();
+  public Iterator<Service> getLeisuresVisitedIterator();
 
   /**
    * - checks if visitedService is leisure
