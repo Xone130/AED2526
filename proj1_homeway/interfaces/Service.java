@@ -60,4 +60,10 @@ public interface Service {
    * @return a TwoWayIterator of the students in this service
    */
   public TwoWayIterator<Student> getStudentsHereTwoWayIterator();
+
+  /**
+   * checks if this service has a description with that tag
+   * @return true if this service has a description with that tag
+   */
+  public boolean hasDescription(String tag);
 }

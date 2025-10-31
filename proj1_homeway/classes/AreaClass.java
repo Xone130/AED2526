@@ -74,6 +74,16 @@ public class AreaClass implements Area {
     return searchStudent(studentName).getLocation();
   }
 
+
+  public Service getMostRelevantService(String studentName, ServiceType type) { // find
+    Student student = searchStudent(studentName);
+
+    switch(student.getType()){
+      case BOOKISH, OUTGOING -> { return this.getBestService(type); }
+      case THRIFTY -> { return this.findCheapestService(type); }
+    }
+  }
+
   @Override
   public Iterator<Service> getServicesIterator() { // services
     return servicesInThisArea.iterator();
@@ -139,6 +149,12 @@ public class AreaClass implements Area {
     final long minDistanceFinal = minDistance;
     Predicate<Service> minDistanceFilter = service -> manhattanDistance(service, studentLocation) == minDistanceFinal;
     return new FilterIterator<>( validServices.iterator(), minDistanceFilter); 
+  }
+
+  @Override
+  public Iterator<Service> getTaggedServicesIterator(String tag) { // tag
+    Predicate<Service> hasTagFilter = service -> service.hasDescription(tag);
+    return new FilterIterator<> ( servicesInThisArea.iterator(), hasTagFilter );
   }
 
   // command methods ---------------------------------------------------------------------------------------
@@ -247,6 +263,14 @@ public class AreaClass implements Area {
     return false;
   }
 
+  @Override
+  public boolean isThriftyDistracted(String studentName, String serviceName) {
+    ThriftyStudent student = (ThriftyStudent) searchStudent(studentName);
+    Service cheapest = student.getCurrentCheapestEating();
+    if(cheapest == null) return false;
+
+    return student.getCurrentCheapestEating().getPrice() < searchService(serviceName).getPrice();
+  }
 
   // helpers ---------------------------------------------------------------------------------------
 
@@ -340,6 +364,10 @@ public class AreaClass implements Area {
     student.setLocation(newLocation);
   }
 
+  /**
+   * updates service order to make sure the order by score works correctly
+   * @param service service to be updatted
+   */
   private void updateServicesByAverage(Service service) {
 
     servicesByAverage.remove(service);
@@ -354,6 +382,27 @@ public class AreaClass implements Area {
    */
   private long manhattanDistance(Service service1, Service service2){
     return (Math.abs(service1.getLatitude() - service2.getLatitude()) + Math.abs(service1.getLongitude() - service2.getLongitude()));
+  }
+
+  /**
+   * 
+   * @param type type of service
+   * @return the cheapest service of the type in the currentArea
+   */
+  private Service getBestService(ServiceType type) {
+    Iterator<Service> services = servicesByAverage.iterator();
+
+    Service current;
+    while(services.hasNext()){
+      current = services.next();
+      if(current.getType() == type) return current;
+    }
+    return null;
+  }
+
+  private Service findCheapestService(ServiceType type) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'findCheapestService'");
   }
 
 }

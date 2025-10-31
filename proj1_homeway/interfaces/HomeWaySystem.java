@@ -196,9 +196,10 @@ InvalidCapacityException, StudentExistsException;
 
   /**
    * public helper method. 
-   * @return currentArea
+   * gets the name of the currentArea
+   * @return currentAreaName
    */
-  public Area getCurrentArea();
+  public String getCurrentAreaName();
 
   /**
    * public helper method.

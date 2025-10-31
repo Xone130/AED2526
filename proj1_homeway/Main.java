@@ -19,74 +19,77 @@ import java.util.Scanner;
 
 public class Main {
 
+  private static Scanner in;
+  private static HomeWaySystem hs;
+
   //command messages
-  public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
-  public static final String END             = "Bye!";
+  private static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
+  private static final String END             = "Bye!";
 
   //error messages
-  public static final String BOUNDS_NOT_DEFINED       = "System bounds not defined.";
-  public static final String BOUNDS_ALREADY_EXIST     = "Bounds already exists. Please load it!";
-  public static final String BOUNDS_NOT_EXITS         = "Bounds %s does not exists.";
-  public static final String INVALID_BOUNDS           = "Invalid bounds.";
-  public static final String INVALID_SERVICE_TYPE     = "Invalid service type!";
-  public static final String INVALID_STUDENT_TYPE     = "Invalid student type!";
-  public static final String INVALID_LOCATION         = "Invalid location!";
-  public static final String INVALID_PRICE_LODGING    = "Invalid room price!";
-  public static final String INVALID_PRICE_EATING     = "Invalid menu price!";
-  public static final String INVALID_PRICE_LEISURE    = "Invalid ticket price!";
-  public static final String INVALID_DISCOUNT         = "Invalid discount price!";
-  public static final String INVALID_CAPACITY         = "Invalid capacity!";
-  public static final String SERVICE_ALREADY_EXISTS   = "%s already exists!";
-  public static final String STUDENT_ALREADY_EXISTS   = "%s already exists!";
-  public static final String SERVICE_NOT_EXISTS       = "%s does not exist!";
-  public static final String STUDENT_NOT_EXISTS       = "%s does not exist!";
-  public static final String LODGING_NOT_EXIST        = "lodging %s does not exist!";
-  public static final String UNKNOWN_SERVICE          = "Unknown %s!"; 
-  public static final String NOT_EATING_LEISURE       = "%s is not a valid service!"; 
-  public static final String STUDENT_ALREADY_THERE    = "Already there!"; 
-  public static final String HOME_ALREADY_THAT        = "That is %s's home!"; 
-  public static final String EATING_IS_FULL           = "eating %s is full!"; 
-  public static final String LODGING_IS_FULL          = "lodging %s is full!"; 
-  public static final String THRIFTY_MOVE_ERROR       = "Move is not acceptable for %s!"; 
-  public static final String SERVICE_EMPTY            = "No students on %s!"; 
-  public static final String ORDER_NOT_EXIST          = "This order does not exists!"; 
-  public static final String SERVICE_NOT_CONTROL      = "%s does not control student entry and exit!"; 
-  public static final String NO_VISITED_LOCATIONS     = "%s has not visited any locations!"; 
-  public static final String STUDENT_IS_THRIFTY       = "%s is thrifty!"; 
-  public static final String INVALID_EVALUATION       = "Invalid evaluation!"; 
-  public static final String NO_SERVICES_OF_TYPE      = "No %s services!"; 
-  public static final String NO_SERVICES_OF_TYPE_STAR = "No %s services with average!"; 
-  public static final String NO_SERVICES_WITH_TAG     = "There are no services with this tag!"; 
+  private static final String BOUNDS_NOT_DEFINED       = "System bounds not defined.";
+  private static final String BOUNDS_ALREADY_EXIST     = "Bounds already exists. Please load it!";
+  private static final String BOUNDS_NOT_EXITS         = "Bounds %s does not exists.";
+  private static final String INVALID_BOUNDS           = "Invalid bounds.";
+  private static final String INVALID_SERVICE_TYPE     = "Invalid service type!";
+  private static final String INVALID_STUDENT_TYPE     = "Invalid student type!";
+  private static final String INVALID_LOCATION         = "Invalid location!";
+  private static final String INVALID_PRICE_LODGING    = "Invalid room price!";
+  private static final String INVALID_PRICE_EATING     = "Invalid menu price!";
+  private static final String INVALID_PRICE_LEISURE    = "Invalid ticket price!";
+  private static final String INVALID_DISCOUNT         = "Invalid discount price!";
+  private static final String INVALID_CAPACITY         = "Invalid capacity!";
+  private static final String SERVICE_ALREADY_EXISTS   = "%s already exists!";
+  private static final String STUDENT_ALREADY_EXISTS   = "%s already exists!";
+  private static final String SERVICE_NOT_EXISTS       = "%s does not exist!";
+  private static final String STUDENT_NOT_EXISTS       = "%s does not exist!";
+  private static final String LODGING_NOT_EXIST        = "lodging %s does not exist!";
+  private static final String UNKNOWN_SERVICE          = "Unknown %s!"; 
+  private static final String NOT_EATING_LEISURE       = "%s is not a valid service!"; 
+  private static final String STUDENT_ALREADY_THERE    = "Already there!"; 
+  private static final String HOME_ALREADY_THAT        = "That is %s's home!"; 
+  private static final String EATING_IS_FULL           = "eating %s is full!"; 
+  private static final String LODGING_IS_FULL          = "lodging %s is full!"; 
+  private static final String THRIFTY_MOVE_ERROR       = "Move is not acceptable for %s!"; 
+  private static final String SERVICE_EMPTY            = "No students on %s!"; 
+  private static final String ORDER_NOT_EXIST          = "This order does not exists!"; 
+  private static final String SERVICE_NOT_CONTROL      = "%s does not control student entry and exit!"; 
+  private static final String NO_VISITED_LOCATIONS     = "%s has not visited any locations!"; 
+  private static final String STUDENT_IS_THRIFTY       = "%s is thrifty!"; 
+  private static final String INVALID_EVALUATION       = "Invalid evaluation!"; 
+  private static final String NO_SERVICES_OF_TYPE      = "No %s services!"; 
+  private static final String NO_SERVICES_OF_TYPE_STAR = "No %s services with average!"; 
+  private static final String NO_SERVICES_WITH_TAG     = "There are no services with this tag!"; 
   
   //user messages
-  public static final String AREA_CREATED          = "%s created.";
-  public static final String AREA_SAVED            = "%s saved.";
-  public static final String AREA_LOADED           = "%s loaded.";
-  public static final String NO_SERVICES           = "No services yet!";
-  public static final String NO_STUDENTS           = "No students yet!";
-  public static final String NO_STUDENTS_FROM      = "No students from %s!";
-  public static final String NO_SERVICES_IN_SYSTEM = "No services in the system.";
-  public static final String SERVICE_ADDED         = "%s %s added.";
-  public static final String STUDENT_ADDED         = "%s added.";
-  public static final String LIST_SERVICES         = "%s: %s (%d, %d).";
-  public static final String LIST_STUDENTS         = "%s: %s at %s.";
-  public static final String STUDENT_LEFT          = "%s has left.";
-  public static final String STUDENT_WENT_HERE     = "%s is now at %s.";
-  public static final String THRIFTY_DISTRACTED    = "%s is distracted!";
-  public static final String STUDENT_MOVED         = "lodging %s is now %s's home. %s is at home."; 
-  public static final String LIST_USERS            = "%s: %s";
-  public static final String WHERE_STUDENT         = "%s is at %s %s (%d, %d).";
-  public static final String EVALUATION_REGISTERED = "Your evaluation has been registered!";
-  public static final String RANKING_HEADER        = "Services sorted in descending order";
-  public static final String LIST_RANKING          = "%s: %d";
-  public static final String RANKED_HEADER         = "%s services closer with %d average";
-  public static final String LIST_TAGGED           = "%s %s";
+  private static final String AREA_CREATED          = "%s created.";
+  private static final String AREA_SAVED            = "%s saved.";
+  private static final String AREA_LOADED           = "%s loaded.";
+  private static final String NO_SERVICES           = "No services yet!";
+  private static final String NO_STUDENTS           = "No students yet!";
+  private static final String NO_STUDENTS_FROM      = "No students from %s!";
+  private static final String NO_SERVICES_IN_SYSTEM = "No services in the system.";
+  private static final String SERVICE_ADDED         = "%s %s added.";
+  private static final String STUDENT_ADDED         = "%s added.";
+  private static final String LIST_SERVICES         = "%s: %s (%d, %d).";
+  private static final String LIST_STUDENTS         = "%s: %s at %s.";
+  private static final String STUDENT_LEFT          = "%s has left.";
+  private static final String STUDENT_WENT_HERE     = "%s is now at %s.";
+  private static final String THRIFTY_DISTRACTED    = "%s is distracted!";
+  private static final String STUDENT_MOVED         = "lodging %s is now %s's home. %s is at home."; 
+  private static final String LIST_USERS            = "%s: %s";
+  private static final String WHERE_STUDENT         = "%s is at %s %s (%d, %d).";
+  private static final String EVALUATION_REGISTERED = "Your evaluation has been registered!";
+  private static final String RANKING_HEADER        = "Services sorted in descending order";
+  private static final String LIST_RANKING          = "%s: %d";
+  private static final String RANKED_HEADER         = "%s services closer with %d average";
+  private static final String LIST_TAGGED           = "%s %s";
   
 
 
   public static void main(String args[]){
-    Scanner in = new Scanner(System.in);
-    HomeWaySystem hs = new HomewaySystemClass();
+    in = new Scanner(System.in);
+    hs = new HomewaySystemClass();
     Command cmd;
 
     do {
@@ -95,24 +98,24 @@ public class Main {
       switch(cmd){
         case HELP -> { cmd_help(); in.nextLine(); }
         case EXIT -> System.out.println(END);
-        case BOUNDS -> cmd_bounds(hs, in);
-        case SAVE -> cmd_save(hs);
-        case LOAD -> cmd_load(hs, in);
-        case SERVICE -> cmd_service(hs, in);
-        case SERVICES -> cmd_services(hs);
-        case STUDENT -> cmd_student(hs, in);
-        case LEAVE -> cmd_leave(hs, in);
-        case STUDENTS -> cmd_students(hs, in);
-        case GO -> cmd_go(hs, in);
-        case MOVE -> cmd_move(hs, in);
-        case USERS -> cmd_users(hs, in);
-        case WHERE -> cmd_where(hs, in);
-        case VISITED -> cmd_visited(hs, in);
-        case STAR -> cmd_star(hs, in);
-        case RANKING -> cmd_ranking(hs);
-        case RANKED -> cmd_ranked(hs, in);
-        case TAG -> cmd_tag(hs, in);
-        case FIND -> cmd_find(hs, in);
+        case BOUNDS -> cmd_bounds();
+        case SAVE -> cmd_save();
+        case LOAD -> cmd_load();
+        case SERVICE -> cmd_service();
+        case SERVICES -> cmd_services();
+        case STUDENT -> cmd_student();
+        case LEAVE -> cmd_leave();
+        case STUDENTS -> cmd_students();
+        case GO -> cmd_go();
+        case MOVE -> cmd_move();
+        case USERS -> cmd_users();
+        case WHERE -> cmd_where();
+        case VISITED -> cmd_visited();
+        case STAR -> cmd_star();
+        case RANKING -> cmd_ranking();
+        case RANKED -> cmd_ranked();
+        case TAG -> cmd_tag();
+        case FIND -> cmd_find();
         case UNKNOWN -> { System.out.println(UNKNOWN_COMMAND); in.nextLine(); }
       }
     }while (!cmd.equals(Command.EXIT));
@@ -125,7 +128,7 @@ public class Main {
     for(int i=0; i<help.length-1;i++) System.out.println(help[i].getMsg());
   }
   
-  private static void cmd_bounds(HomeWaySystem hs, Scanner in) {
+  private static void cmd_bounds() {
     long top = in.nextLong();
     long left = in.nextLong();
 		long bottom = in.nextLong();
@@ -143,14 +146,14 @@ public class Main {
     }
   } 
 
-  private static void cmd_save(HomeWaySystem hs) {
+  private static void cmd_save() {
     if(!hasArea(hs)) return;
 
     hs.saveCurrentArea();
-    System.out.printf(AREA_SAVED + "\n", hs.getCurrentArea().getAreaName());
+    System.out.printf(AREA_SAVED + "\n", hs.getCurrentAreaName());
   }
 
-  private static void cmd_load(HomeWaySystem hs, Scanner in) {
+  private static void cmd_load() {
     String areaName = in.nextLine().trim();
 
     try {
@@ -161,7 +164,7 @@ public class Main {
     } 
   }
 
-  private static void cmd_service(HomeWaySystem hs, Scanner in) {
+  private static void cmd_service() {
 
     ServiceType type = getServiceType(in.next());
     long latitude = in.nextLong();
@@ -193,7 +196,7 @@ public class Main {
     }
   }
 
-  private static void cmd_services(HomeWaySystem hs) {
+  private static void cmd_services() {
     if(!hasArea(hs)) return;
   
     Iterator<Service> services = hs.getServicesIterator();
@@ -208,7 +211,7 @@ public class Main {
     }
   }
 
-  private static void cmd_student(HomeWaySystem hs, Scanner in) {
+  private static void cmd_student() {
  
     StudentType type = getStudentType(in.nextLine().trim());
     String studentName = in.nextLine().trim();
@@ -231,7 +234,7 @@ public class Main {
     }
   }
 
-  private static void cmd_leave(HomeWaySystem hs, Scanner in) {
+  private static void cmd_leave() {
     String studentName = in.nextLine().trim();
     if(!hasArea(hs)) return;
 
@@ -243,7 +246,7 @@ public class Main {
     }
   }
 
-  private static void cmd_students(HomeWaySystem hs, Scanner in) {
+  private static void cmd_students() {
     String mode = in.nextLine().trim();
     if(!hasArea(hs)) return;
 
@@ -262,7 +265,7 @@ public class Main {
       
   }
 
-  private static void cmd_go(HomeWaySystem hs, Scanner in) {
+  private static void cmd_go() {
     String studentName = in.nextLine();
     String serviceName = in.nextLine();
     if(!hasArea(hs)) return;
@@ -285,7 +288,7 @@ public class Main {
     }
   }
 
-  private static void cmd_move(HomeWaySystem hs, Scanner in) {
+  private static void cmd_move() {
     String studentName = in.nextLine().trim();
     String serviceName = in.nextLine().trim();
     if(!hasArea(hs)) return;
@@ -307,7 +310,7 @@ public class Main {
     }
   }
 
-  private static void cmd_users(HomeWaySystem hs, Scanner in) {
+  private static void cmd_users() {
     char order = in.next().charAt(0);
     String serviceName = in.nextLine().trim();
     if(!hasArea(hs)) return;
@@ -342,7 +345,7 @@ public class Main {
     }
   }
 
-  private static void cmd_where(HomeWaySystem hs, Scanner in) {
+  private static void cmd_where() {
     String studentName = in.nextLine().trim();
     if(!hasArea(hs)) return;
 
@@ -355,7 +358,7 @@ public class Main {
     }
   }
 
-  private static void cmd_visited(HomeWaySystem hs, Scanner in) {
+  private static void cmd_visited() {
     String studentName = in.nextLine().trim();
     if(!hasArea(hs)) return;
 
@@ -377,7 +380,7 @@ public class Main {
   
   }
 
-  private static void cmd_star(HomeWaySystem hs, Scanner in) {
+  private static void cmd_star() {
     int star = in.nextInt();
     String serviceName = in.nextLine().trim();
     String description = in.nextLine().trim();
@@ -394,7 +397,7 @@ public class Main {
 
   }
 
-  private static void cmd_ranking(HomeWaySystem hs) {
+  private static void cmd_ranking() {
     if(!hasArea(hs)) return;
     
     Iterator<Service> services = hs.getServiceByEvaluationIterator();
@@ -408,7 +411,7 @@ public class Main {
     }
   }
 
-  private static void cmd_ranked(HomeWaySystem hs, Scanner in) {
+  private static void cmd_ranked() {
     ServiceType type = getServiceType(in.next()); 
     int star = in.nextInt();
     String studentName = in.nextLine();
@@ -437,7 +440,7 @@ public class Main {
     }
   }
 
-  private static void cmd_tag(HomeWaySystem hs, Scanner in) {
+  private static void cmd_tag() {
     String tag = in.nextLine().trim();
     if(!hasArea(hs)) return;
 
@@ -451,7 +454,7 @@ public class Main {
     }
   }
 
-  private static void cmd_find(HomeWaySystem hs, Scanner in) {
+  private static void cmd_find() {
     String studentName = in.nextLine().trim();
     ServiceType type = getServiceType(in.next());
 

@@ -49,6 +49,14 @@ public interface Area extends Serializable {
   public LodgingService getStudentHome(String studentName);
 
   /**
+   * gets the most relevane service depending on student type 
+   * @param studentName name of the student
+   * @param type type of service
+   * @return the most relevane service depending on student type
+   */
+  public Service getMostRelevantService(String studentName, ServiceType type);
+
+  /**
    * gets an iterator with the services in this area by insertion order
    * @return an iterator with the services in this area by insertion order
    */
@@ -98,6 +106,13 @@ public interface Area extends Serializable {
    * @return an iterator of the services of type with the given score closest to the student
    */
   public Iterator<Service> getServiceOfTypeWithScoreClosestIterator(ServiceType type, int star, String studentName);
+
+  /**
+   * gets an iterator of services with this tag (in description)
+   * @param tag string to search for
+   * @return an iterator of services with this tag
+   */
+  public Iterator<Service> getTaggedServicesIterator(String tag);
 
   /**
    * adds a new service to this area
@@ -199,6 +214,14 @@ public interface Area extends Serializable {
    * @return true if there is any service of type in the currentArea with given average
    */
   public boolean hasServiceOfTypeWithAverage(ServiceType type, int average);
+
+  /**
+   * checks if they are moving to a more expensive earing than he has visited so far
+   * @param studentName name of the student
+   * @param serviceName name of the service
+   * @return true if the student is distacted
+   */
+  public boolean isThriftyDistracted(String studentName, String serviceName);
 
 
 

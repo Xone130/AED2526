@@ -3,10 +3,6 @@
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 package classes;
-import classes.services.*;
-import classes.students.BookishClass;
-import classes.students.OutgoingClass;
-import classes.students.ThriftyClass;
 import dataStructures.Iterator;
 import dataStructures.TwoWayIterator;
 import dataStructures.exceptions.*;
@@ -71,9 +67,9 @@ public class HomewaySystemClass implements HomeWaySystem {
     
     try{
       saveCurrentArea();
-      ObjectInputStream ois = new ObjectInputStream(new FileInputStream( fileName ) );
-      currentArea = (Area) ois.readObject();
-    ois.close();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream( fileName ) )) {
+            currentArea = (Area) ois.readObject();
+        }
     } catch (FileNotFoundException  e ) {
       throw new NoFileException(); // no file with same name
     } catch (IOException | ClassNotFoundException e) {
@@ -199,32 +195,23 @@ public class HomewaySystemClass implements HomeWaySystem {
 
   @Override
   public Iterator<Service> getTaggedServicesIterator(String tag) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTaggedServicesIterator'");
+    return currentArea.getTaggedServicesIterator(tag);
   }
 
   @Override
   public Service findRelevantService(String studentName, ServiceType type)
-      throws StudentNotExistsException, NoServicesOfTypeException {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findRelevantService'");
+    throws StudentNotExistsException, NoServicesOfTypeException {
+    if(!currentArea.hasStudent(studentName)) throw new StudentNotExistsException();
+    if(!currentArea.hasServiceOfType(type)) throw new NoServicesOfTypeException();
+
+    return currentArea.getMostRelevantService(studentName, type);
   }
 
-  @Override
-  public boolean isStudentDistracted(String studentName, String serviceName) {
-    
-    return (getStudent(studentName).getType() == StudentType.THRIFTY && 
-    getService(serviceName).getType() == ServiceType.EATING  
-    //&& getStudent(studentName).getCurrentCheapestEating().getPrice() < getService(serviceName).getPrice());
-    );
-  }
+    //helpers & auxiliar methods --------------------------------------------------------------------------
 
-  //helpers --------------------------------------------------------------------------
-
-  // public helper
   @Override
-  public Area getCurrentArea() {
-    return currentArea;
+  public String getCurrentAreaName() {
+    return currentArea.getAreaName();
   }
 
   @Override
@@ -232,24 +219,9 @@ public class HomewaySystemClass implements HomeWaySystem {
     return currentArea != null;
   }
 
-  /**
-   * returns the object of the Student class with studentName
-   * @param studentName name of the student 
-   * @return the object of the Student class with studentName
-   */
-  private Student getStudent(String studentName) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getStudent'");
-  }
-
-  /**
-   * returns the object of the Service class with serviceName
-   * @param serviceName name of the service 
-   * @return the object of the Service class with serviceName
-   */
-  private Service getService(String serviceName) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getService'");
+  @Override
+  public boolean isStudentDistracted(String studentName, String serviceName) {
+    return currentArea.isThriftyDistracted(studentName, serviceName);
   }
 
   /**

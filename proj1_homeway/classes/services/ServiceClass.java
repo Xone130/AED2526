@@ -24,6 +24,7 @@ public abstract class ServiceClass implements Service {
   private final int price;
   private final int value;
 
+  private int timeInThisAverage;
   private int currentAverage;
   private ListInArray<Evaluation> evaluations;
   private TwoWayList<Student> studentsHere;
@@ -41,6 +42,7 @@ public abstract class ServiceClass implements Service {
     this.evaluations = new ListInArray<>(value);
     evaluations.addFirst(new Evaluation(STARTING_EVALUATION, ""));
     this.currentAverage = STARTING_EVALUATION;
+    this.timeInThisAverage = 1;
 
     this.studentsHere = new DoublyLinkedList<>();
   }
@@ -101,6 +103,8 @@ public abstract class ServiceClass implements Service {
     this.updateAverage();
   }
 
+  // validations ----------------------------------------------------
+
   @Override
   public TwoWayIterator<Student> getStudentsHereTwoWayIterator(){
     return studentsHere.twoWayiterator();
@@ -118,6 +122,16 @@ public abstract class ServiceClass implements Service {
     return false;
   }
 
+  @Override
+  public boolean hasDescription(String tag){
+    Iterator<Evaluation> evals = evaluations.iterator();
+
+    while(evals.hasNext()){
+      if(evals.next().description().toLowerCase().contains(tag.toLowerCase())) return true;
+    }
+    return false;
+  }
+
   // helpers ----------------------------------------------------
 
   /** 
@@ -129,6 +143,8 @@ public abstract class ServiceClass implements Service {
     int counter = 0;
     while(evals.hasNext()){counter = counter + evals.next().star();}
     this.currentAverage = Math.round( (float)counter / evaluations.size() );
+    
   }
+
   
 }
