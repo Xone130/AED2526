@@ -16,6 +16,7 @@ import records.Evaluation;
 public abstract class ServiceClass implements Service {
 
   private static final int STARTING_EVALUATION = 4;
+  private static final int STARTING_TIME_IN_AVERAGE = 1;
   
   private final String serviceName;
   private final ServiceType type;
@@ -42,7 +43,7 @@ public abstract class ServiceClass implements Service {
     this.evaluations = new ListInArray<>(value);
     evaluations.addFirst(new Evaluation(STARTING_EVALUATION, ""));
     this.currentAverage = STARTING_EVALUATION;
-    this.timeInThisAverage = 1;
+    this.timeInThisAverage = STARTING_TIME_IN_AVERAGE;
 
     this.studentsHere = new DoublyLinkedList<>();
   }
@@ -85,6 +86,11 @@ public abstract class ServiceClass implements Service {
   @Override
   public int getNumberOfStudentsHere(){
     return studentsHere.size();
+  }
+
+  @Override
+  public int getTimeInThisAverage(){
+    return timeInThisAverage;
   }
 
   @Override
@@ -138,12 +144,15 @@ public abstract class ServiceClass implements Service {
    * updates currentAverage
    */
   private void updateAverage(){
+    int startingAverage = currentAverage;
     Iterator<Evaluation> evals = evaluations.iterator();
 
     int counter = 0;
     while(evals.hasNext()){counter = counter + evals.next().star();}
     this.currentAverage = Math.round( (float)counter / evaluations.size() );
-    
+
+    if(startingAverage == currentAverage) timeInThisAverage++;
+    else timeInThisAverage = STARTING_TIME_IN_AVERAGE;
   }
 
   

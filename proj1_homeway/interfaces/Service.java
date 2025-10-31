@@ -30,6 +30,12 @@ public interface Service {
   public int getNumberOfStudentsHere();
 
   /**
+   * gets the time a service has spent in this average grading (int)
+   * @return the time a service has spent in this average grading
+   */
+  public int getTimeInThisAverage();
+
+  /**
    * adds a student currently in this service
    * @param newStudent student to be added
    */
@@ -66,4 +72,5 @@ public interface Service {
    * @return true if this service has a description with that tag
    */
   public boolean hasDescription(String tag);
+
 }

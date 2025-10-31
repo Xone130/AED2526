@@ -13,6 +13,8 @@ import java.io.Serializable;
 
 public interface Area extends Serializable {
   
+  // getters, gets, adders & setters ---------------------------------------------------------------------------------------
+
   /**
    * returns student name
    * @return name of this area
@@ -114,6 +116,8 @@ public interface Area extends Serializable {
    */
   public Iterator<Service> getTaggedServicesIterator(String tag);
 
+  // command methods ---------------------------------------------------------------------------------------
+
   /**
    * adds a new service to this area
    * @param newService service to be added
@@ -156,6 +160,7 @@ public interface Area extends Serializable {
    */
   public void evaluateService(String serviceName, Evaluation evaluation);
 
+  // verification methods  ---------------------------------------------------------------------------------------
 
   /**
    * public helper method. 

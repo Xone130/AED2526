@@ -475,7 +475,7 @@ public class Main {
 
   // helpers -------------------------------------------
 
-    private static Command getCommand(Scanner in) {
+  private static Command getCommand(Scanner in) {
     try {
       String comm = in.next().toUpperCase();
       return Command.valueOf(comm);
@@ -484,7 +484,7 @@ public class Main {
     }
   }
 
-  public static boolean hasArea(HomeWaySystem hs){
+  private static boolean hasArea(HomeWaySystem hs){
     boolean bounds = hs.hasCurrentArea();
 
     if(!bounds) System.out.println(BOUNDS_NOT_DEFINED);

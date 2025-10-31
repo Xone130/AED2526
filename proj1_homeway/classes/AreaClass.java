@@ -74,7 +74,7 @@ public class AreaClass implements Area {
     return searchStudent(studentName).getLocation();
   }
 
-
+  @Override
   public Service getMostRelevantService(String studentName, ServiceType type) { // find
     Student student = searchStudent(studentName);
 
@@ -82,6 +82,7 @@ public class AreaClass implements Area {
       case BOOKISH, OUTGOING -> { return this.getBestService(type); }
       case THRIFTY -> { return this.findCheapestService(type); }
     }
+    return null;
   }
 
   @Override
@@ -385,24 +386,51 @@ public class AreaClass implements Area {
   }
 
   /**
-   * 
+   * gets the best service in the system according to ranking and of a specific type
    * @param type type of service
    * @return the cheapest service of the type in the currentArea
    */
   private Service getBestService(ServiceType type) {
-    Iterator<Service> services = servicesByAverage.iterator();
+    Predicate<Service> typeAndAverageFilter = service -> service.getType() == type && service.getEvaluationAverage() == this.getHighestAverageServiceWithType(type);
+    FilterIterator<Service> services = new FilterIterator<>(servicesByAverage.iterator(), typeAndAverageFilter);
 
+    Service Best = services.next();
     Service current;
     while(services.hasNext()){
       current = services.next();
-      if(current.getType() == type) return current;
+      if(current.getTimeInThisAverage() > Best.getTimeInThisAverage()) Best = current;
     }
-    return null;
+    return Best;
   }
 
   private Service findCheapestService(ServiceType type) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findCheapestService'");
+    Iterator<Service> services = servicesInThisArea.iterator();
+    
+    Service current;
+    while(services.hasNext()){
+      current = services.hasNext();
+    }
+  }
+
+  /**
+   * gets the highest average in the system with given type 
+   * @param type type of service
+   * @return an int representing the highest average in the system with given type 
+   */
+  private int getHighestAverageServiceWithType(ServiceType type){
+    Iterator<Service> services = servicesByAverage.iterator();
+
+    int highest = 0;
+    Service current;
+    while(services.hasNext()){
+      current = services.next();
+
+      if(current.getType() == type){
+        int average = current.getEvaluationAverage();
+        if(average > highest) highest = average;
+      } 
+    }
+    return highest;
   }
 
 }
