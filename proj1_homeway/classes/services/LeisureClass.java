@@ -9,9 +9,20 @@ import interfaces.LeisureService;
 
 public class LeisureClass extends ServiceClass implements LeisureService  {
 
+  private int discount;
+
   public LeisureClass(ServiceType type, long latitude, long longitude, int price, int value, String serviceName) {
     super(type, latitude, longitude, price, value, serviceName);
+
+    this.discount = value;
   }
 
+  
+  @Override
+  public int getPrice(){
+    int price = super.getPrice();
+    int value = price - (price * discount/100);
+    return value;
+  }
 
 }

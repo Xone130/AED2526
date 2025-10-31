@@ -42,6 +42,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * 
      * @return true if list is empty
      */
+    @Override
     public boolean isEmpty() {
         return currentSize == 0;
     }
@@ -51,7 +52,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * 
      * @return number of elements in the list
      */
-
+    @Override
     public int size() {
         return currentSize;
     }
@@ -61,7 +62,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      *
      * @return Two-Way Iterator of the elements in the list
      */
-
+    @Override
     public TwoWayIterator<E> twoWayiterator() {
         return new TwoWayDoublyIterator<>(head, tail);
     }
@@ -72,6 +73,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return Iterator of the elements in the li
      *         st
      */
+    @Override
     public Iterator<E> iterator() {
         return new DoublyIterator<>(head);
     }
@@ -81,6 +83,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * 
      * @param element - Element to be inserted
      */
+    @Override
     public void addFirst(E element) {
         DoublyListNode<E> newNode = new DoublyListNode<>(element, null, head);
 
@@ -96,6 +99,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * 
      * @param element - Element to be inserted
      */
+    @Override
     public void addLast(E element) {
         if (this.isEmpty()){
             addFirst(element); 
@@ -115,6 +119,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getFirst() {
         if (this.isEmpty()) throw new NoSuchElementException();
         return head.getElement();
@@ -126,6 +131,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getLast() {
         if (this.isEmpty()) throw new NoSuchElementException();
         return tail.getElement();
@@ -141,6 +147,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return element at position
      * @throws InvalidPositionException if position is not valid in the list
      */
+    @Override
     public E get(int position) {
         if(position < 0 || position >= currentSize) throw new InvalidPositionException();
         if(position == 0) return getFirst();
@@ -157,6 +164,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
      */
+    @Override
     public int indexOf(E element) {
         
         DoublyListNode<E> node = head;

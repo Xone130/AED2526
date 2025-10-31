@@ -15,7 +15,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
     /**
      * Node with the first element in the iteration.
      */
-    private DoublyListNode<E> lastNode;
+    private final DoublyListNode<E> lastNode;
     /**
      * Node with the previous element in the iteration.
      */
@@ -38,6 +38,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * rather than throwing an exception.
      * @return true iff the iteration has more elements in the reverse direction
      */
+    @Override
     public boolean hasPrevious( ) {
         return prevToReturn != null;
     }
@@ -47,6 +48,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @return the next element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
+    @Override
     public E next( ){
         if(!this.hasNext()) throw new NoSuchElementException();
 
@@ -62,6 +64,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @return previous element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
+    @Override
     public E previous( ) {
         if(!this.hasPrevious()) throw new NoSuchElementException();
 
@@ -77,6 +80,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * After fullForward, if iteration is not empty,
      * previous will return the last element
      */
+    @Override
     public void fullForward() {
         nextToReturn = null;
         prevToReturn = lastNode;
@@ -86,6 +90,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * Restarts the iteration.
      * After rewind, if the iteration is not empty, next will return the first element.
      */
+    @Override
     public void rewind() {
         super.rewind();
         prevToReturn = null;

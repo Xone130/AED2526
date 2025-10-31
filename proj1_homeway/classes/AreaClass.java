@@ -406,10 +406,13 @@ public class AreaClass implements Area {
   private Service findCheapestService(ServiceType type) {
     Iterator<Service> services = servicesInThisArea.iterator();
     
+    Service cheapest = services.next();
     Service current;
     while(services.hasNext()){
-      current = services.hasNext();
+      current = services.next();
+      if(current.getPrice() <= cheapest.getPrice()) cheapest = current;
     }
+    return cheapest;
   }
 
   /**
