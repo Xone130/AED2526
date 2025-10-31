@@ -4,8 +4,9 @@
 */
 package interfaces;
 import enums.StudentType;
+import java.io.Serializable;
 
-public interface Student {
+public interface Student extends Serializable {
 
   public String getName();
 

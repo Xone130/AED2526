@@ -3,11 +3,12 @@
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 package interfaces;
-import records.Evaluation;
 import dataStructures.TwoWayIterator;
 import enums.ServiceType;
+import java.io.Serializable;
+import records.Evaluation;
 
-public interface Service {
+public interface Service extends Serializable {
 
   public String getName();
 

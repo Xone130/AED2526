@@ -27,7 +27,8 @@ public class ListInArray<E> implements List<E> {
      */
     @SuppressWarnings("unchecked")
     public ListInArray(int dimension) {
-        elems = (E[]) new Object[dimension];
+        System.out.println("elems.length=" + elems.length + ", counter=" + counter);
+        elems = (E[]) new Object[Math.max(1, dimension)];
         counter = 0;
     }
     /**
@@ -169,6 +170,7 @@ public class ListInArray<E> implements List<E> {
     @Override
     public void add(int position, E element) {
         if(!isPositionValidForAdd(position)) throw new InvalidPositionException();
+        if(elems == null || elems.length == 0) this.extendArray();
         if(this.isFull()) this.extendArray();
 
         if(position == 0) this.addFirst(element);

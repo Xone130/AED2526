@@ -21,7 +21,9 @@ public class LeisureClass extends ServiceClass implements LeisureService  {
   @Override
   public int getPrice(){
     int price = super.getPrice();
-    int value = price - (price * discount/100);
+    int value;
+    if(discount == 0) value = price;
+    else value = price - (price * discount/100);
     return value;
   }
 

@@ -127,6 +127,7 @@ public class Main {
     for(int i=0; i<help.length-1;i++) System.out.println(help[i].getMsg());
   }
   
+  
   private static void cmd_bounds() {
     long top = in.nextLong();
     long left = in.nextLong();

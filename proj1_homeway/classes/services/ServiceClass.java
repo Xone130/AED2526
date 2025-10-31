@@ -6,6 +6,7 @@ package classes.services;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import dataStructures.List;
+import dataStructures.ListInArray;
 import dataStructures.TwoWayIterator;
 import dataStructures.TwoWayList;
 import enums.ServiceType;
@@ -17,6 +18,7 @@ public abstract class ServiceClass implements Service {
 
   private static final int STARTING_EVALUATION = 4;
   private static final int STARTING_TIME_IN_AVERAGE = 1;
+  private static final int ARRAY_DEFAUT_STARTING_SIZE = 1;
   
   private final String serviceName;
   private final ServiceType type;
@@ -40,8 +42,8 @@ public abstract class ServiceClass implements Service {
     this.value = value;
 
     //evaluations
-    this.evaluations = new DoublyLinkedList<>();
-    evaluations.addFirst(new Evaluation(STARTING_EVALUATION, ""));
+    this.evaluations = new ListInArray<>(ARRAY_DEFAUT_STARTING_SIZE);
+    evaluations.addFirst(new Evaluation(STARTING_EVALUATION, "") );
     this.currentAverage = STARTING_EVALUATION;
     this.timeInThisAverage = STARTING_TIME_IN_AVERAGE;
 
