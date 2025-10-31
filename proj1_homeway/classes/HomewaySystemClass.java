@@ -89,6 +89,8 @@ public class HomewaySystemClass implements HomeWaySystem {
       if(currentArea.hasService(serviceName)) throw new ServiceExistsException();
 
       currentArea.addServiceHere( type, latitude, longitude, price, value, serviceName );
+      this.saveCurrentArea();
+
   }
 
   @Override
@@ -113,6 +115,7 @@ public class HomewaySystemClass implements HomeWaySystem {
     if(!currentArea.hasStudent(studentName)) throw new StudentNotExistsException();
 
     currentArea.removeStudent(studentName);
+    this.saveCurrentArea();
   }
 
   @Override
@@ -131,6 +134,7 @@ public class HomewaySystemClass implements HomeWaySystem {
     if(currentArea.getServiceType(serviceName) != ServiceType.EATING) if(currentArea.isServiceFull(serviceName)) throw new InvalidCapacityException();
 
     currentArea.changeStudentLocation(studentName, serviceName);
+    this.saveCurrentArea();
   }
 
   @Override
@@ -143,6 +147,7 @@ public class HomewaySystemClass implements HomeWaySystem {
     if(currentArea.getStudentType(studentName) == StudentType.THRIFTY) if(currentArea.isthriftyServiceMoreExpensive(studentName, serviceName)) throw new ThriftyException();
 
     currentArea.changeStudentHome(studentName, serviceName);
+    this.saveCurrentArea();
   }
 
   @Override
@@ -175,6 +180,7 @@ public class HomewaySystemClass implements HomeWaySystem {
     if( !(currentArea.hasService(serviceName) )) throw new ServiceNotExistsException();
 
     currentArea.evaluateService(serviceName, evaluation);
+    this.saveCurrentArea();
   }
 
   @Override
@@ -235,7 +241,5 @@ public class HomewaySystemClass implements HomeWaySystem {
     File file = new File(fileName);
     return file.exists();
   }
-
-
 
 }
