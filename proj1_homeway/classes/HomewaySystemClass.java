@@ -56,7 +56,7 @@ public class HomewaySystemClass implements HomeWaySystem {
       oos.flush();
       oos.close();
     } catch (IOException e) {
-      System.out.println("Erro no save");
+      //System.out.println("Erro no save");
     }
   }
 
