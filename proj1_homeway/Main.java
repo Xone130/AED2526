@@ -8,14 +8,13 @@
  * TO DO: mudar latitude e longitude para record Point (e bounds)
  */
 
+import classes.HomewaySystemClass;
 import dataStructures.*;
 import dataStructures.exceptions.*;
 import enums.*;
-import classes.HomewaySystemClass;
 import interfaces.*;
-import records.Evaluation;
-
 import java.util.Scanner;
+import records.Evaluation;
 
 public class Main {
 
@@ -93,7 +92,7 @@ public class Main {
     Command cmd;
 
     do {
-      cmd = getCommand(in);
+      cmd = getCommand();
 
       switch(cmd){
         case HELP -> { cmd_help(); in.nextLine(); }
@@ -147,7 +146,7 @@ public class Main {
   } 
 
   private static void cmd_save() {
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     hs.saveCurrentArea();
     System.out.printf(AREA_SAVED + "\n", hs.getCurrentAreaName());
@@ -173,7 +172,7 @@ public class Main {
     int value = in.nextInt();
     String serviceName = in.nextLine().trim();
     
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
     if (type == null) { System.out.println(INVALID_SERVICE_TYPE); return; }
 
     try {
@@ -197,7 +196,7 @@ public class Main {
   }
 
   private static void cmd_services() {
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
   
     Iterator<Service> services = hs.getServicesIterator();
 
@@ -218,7 +217,7 @@ public class Main {
     String country = in.nextLine().trim();
     String home = in.nextLine();
 
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
     if (type == null) { System.out.println(INVALID_STUDENT_TYPE); return; }
     if (home == null) { System.out.printf(LODGING_NOT_EXIST + "\n", home); return; }
 
@@ -236,7 +235,7 @@ public class Main {
 
   private static void cmd_leave() {
     String studentName = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     try {
       hs.removeStudentFromCurrentArea(studentName);
@@ -248,7 +247,7 @@ public class Main {
 
   private static void cmd_students() {
     String mode = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     Iterator<Student> students = hs.getStudentsIterator(mode);
 
@@ -268,7 +267,7 @@ public class Main {
   private static void cmd_go() {
     String studentName = in.nextLine();
     String serviceName = in.nextLine();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     try {
       hs.goToLocation(studentName, serviceName);
@@ -291,7 +290,7 @@ public class Main {
   private static void cmd_move() {
     String studentName = in.nextLine().trim();
     String serviceName = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     try {
       hs.moveOut(studentName, serviceName);
@@ -313,7 +312,7 @@ public class Main {
   private static void cmd_users() {
     char order = in.next().charAt(0);
     String serviceName = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     if( !(order == '<' || order == '>') ) { System.out.println(ORDER_NOT_EXIST); return; }
     
@@ -347,7 +346,7 @@ public class Main {
 
   private static void cmd_where() {
     String studentName = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     try {
       Service studentLocation = hs.getStudentLocation(studentName);
@@ -360,7 +359,7 @@ public class Main {
 
   private static void cmd_visited() {
     String studentName = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     try {
       Iterator<Service> services = hs.getVisitedServicesIterator(studentName);
@@ -384,7 +383,7 @@ public class Main {
     int star = in.nextInt();
     String serviceName = in.nextLine().trim();
     String description = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     if(star < 1 || star > 5) { System.out.println(INVALID_EVALUATION); return;}
     try {
@@ -398,7 +397,7 @@ public class Main {
   }
 
   private static void cmd_ranking() {
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
     
     Iterator<Service> services = hs.getServiceByEvaluationIterator();
     if(!services.hasNext()) {System.out.println(NO_SERVICES_IN_SYSTEM); return;}
@@ -415,7 +414,7 @@ public class Main {
     ServiceType type = getServiceType(in.next()); 
     int star = in.nextInt();
     String studentName = in.nextLine();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     if(star < 1 || star > 5) { System.out.println(INVALID_EVALUATION); return;}
     try {
@@ -442,7 +441,7 @@ public class Main {
 
   private static void cmd_tag() {
     String tag = in.nextLine().trim();
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
 
     Iterator<Service> services = hs.getTaggedServicesIterator(tag);
     if(!services.hasNext()) {System.out.println(NO_SERVICES_WITH_TAG); return;}
@@ -458,7 +457,7 @@ public class Main {
     String studentName = in.nextLine().trim();
     ServiceType type = getServiceType(in.next());
 
-    if(!hasArea(hs)) return;
+    if(!hasArea()) return;
     if (type == null) { System.out.println(INVALID_SERVICE_TYPE); return; }
 
     try {
@@ -475,7 +474,7 @@ public class Main {
 
   // helpers -------------------------------------------
 
-  private static Command getCommand(Scanner in) {
+  private static Command getCommand() {
     try {
       String comm = in.next().toUpperCase();
       return Command.valueOf(comm);
@@ -484,7 +483,7 @@ public class Main {
     }
   }
 
-  private static boolean hasArea(HomeWaySystem hs){
+  private static boolean hasArea(){
     boolean bounds = hs.hasCurrentArea();
 
     if(!bounds) System.out.println(BOUNDS_NOT_DEFINED);

@@ -27,8 +27,7 @@ public class ListInArray<E> implements List<E> {
      */
     @SuppressWarnings("unchecked")
     public ListInArray(int dimension) {
-        int capacity = Math.max(1, dimension);
-        elems = (E[]) new Object[capacity];
+        elems = (E[]) new Object[dimension];
         counter = 0;
     }
     /**
