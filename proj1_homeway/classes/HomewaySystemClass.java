@@ -53,10 +53,8 @@ public class HomewaySystemClass implements HomeWaySystem {
 
     try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream( fileName ))) {
       oos.writeObject(currentArea);
-      oos.flush();
-      oos.close();
+
     } catch (IOException e) {
-      //System.out.println("Erro no save");
     }
   }
 
@@ -73,7 +71,6 @@ public class HomewaySystemClass implements HomeWaySystem {
     } catch (FileNotFoundException  e ) {
       throw new NoFileException(); // no file with same name
     } catch (IOException | ClassNotFoundException e) {
-      System.out.println("Erro no load");
     }
   }
 
@@ -89,7 +86,6 @@ public class HomewaySystemClass implements HomeWaySystem {
       if(currentArea.hasService(serviceName)) throw new ServiceExistsException();
 
       currentArea.addServiceHere( type, latitude, longitude, price, value, serviceName );
-      this.saveCurrentArea();
 
   }
 
