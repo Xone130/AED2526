@@ -41,8 +41,8 @@ public class HomewaySystemClass implements HomeWaySystem {
     if(areaExists(areaName)) throw new BoundsExistException();
 
     Area newArea = new AreaClass(top, left, bottom, right, areaName);
-    saveCurrentArea();
     currentArea = newArea;
+    saveCurrentArea();
   }
 
   @Override
