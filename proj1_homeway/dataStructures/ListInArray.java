@@ -27,7 +27,8 @@ public class ListInArray<E> implements List<E> {
      */
     @SuppressWarnings("unchecked")
     public ListInArray(int dimension) {
-        elems = (E[]) new Object[dimension];
+        int capacity = Math.max(1, dimension);
+        elems = (E[]) new Object[capacity];
         counter = 0;
     }
     /**
@@ -35,6 +36,7 @@ public class ListInArray<E> implements List<E> {
      *
      * @return true if list is empty
      */
+    @Override
     public boolean isEmpty() {
         return counter == 0;
     }
@@ -44,6 +46,7 @@ public class ListInArray<E> implements List<E> {
      *
      * @return number of elements in the list
      */
+    @Override
     public int size() {
         return counter;
     }
@@ -53,6 +56,7 @@ public class ListInArray<E> implements List<E> {
      *
      * @return Iterator of the elements in the list
      */
+    @Override
     public Iterator<E> iterator() {
         return new ArrayIterator<>(elems,counter);
     }
@@ -63,6 +67,7 @@ public class ListInArray<E> implements List<E> {
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getFirst() {
         if(this.isEmpty()) throw new NoSuchElementException();
         return elems[0];
@@ -74,6 +79,7 @@ public class ListInArray<E> implements List<E> {
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getLast() {
         if(this.isEmpty()) throw new NoSuchElementException();
         return elems[counter - 1];
@@ -89,6 +95,7 @@ public class ListInArray<E> implements List<E> {
      * @return element at position
      * @throws InvalidPositionException if position is not valid in the list
      */
+    @Override
     public E get(int position) {
         if(!isPositionValid(position)) throw new InvalidPositionException();
         if(position == 0) return this.getFirst();
@@ -105,6 +112,7 @@ public class ListInArray<E> implements List<E> {
      * @param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
      */
+    @Override
     public int indexOf(E element) { // assumes element != null
         Iterator<E> it = this.iterator();
 
@@ -126,6 +134,7 @@ public class ListInArray<E> implements List<E> {
      *
      * @param element to be inserted
      */
+    @Override
     public void addFirst(E element) {
         
         if(this.isFull()) this.extendArray();
@@ -140,6 +149,7 @@ public class ListInArray<E> implements List<E> {
      *
      * @param element to be inserted
      */
+    @Override
     public void addLast(E element) {
         if(this.isFull()) this.extendArray();
         
@@ -157,6 +167,7 @@ public class ListInArray<E> implements List<E> {
      * @param element  - element to be inserted
      * @throws InvalidPositionException - if position is not valid in the list
      */
+    @Override
     public void add(int position, E element) {
         if(!isPositionValidForAdd(position)) throw new InvalidPositionException();
         if(this.isFull()) this.extendArray();
@@ -177,6 +188,7 @@ public class ListInArray<E> implements List<E> {
      * @return element removed from the first position of the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E removeFirst() {
         if(this.isEmpty()) throw new NoSuchElementException();
         E removed = elems[0];
@@ -194,6 +206,7 @@ public class ListInArray<E> implements List<E> {
      * @return element removed from the last position of the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E removeLast() {
         if(this.isEmpty()) throw new NoSuchElementException();
         E removed = elems[counter - 1];
@@ -213,6 +226,7 @@ public class ListInArray<E> implements List<E> {
      * @return element removed at position
      * @throws InvalidPositionException - if position is not valid in the list
      */
+    @Override
     public E remove(int position) {
         if(!this.isPositionValid(position)) throw new InvalidPositionException();
         if(position == 0) return this.removeFirst();
@@ -250,7 +264,9 @@ public class ListInArray<E> implements List<E> {
      */
     @SuppressWarnings("unchecked")
     private void extendArray(){
-        E[] newElems = (E[]) new Object[elems.length * FACTOR];
+        int newLength = Math.max(1, elems.length * FACTOR);
+
+        E[] newElems = (E[]) new Object[newLength];
 
         System.arraycopy(elems, 0, newElems, 0, counter);
         elems = newElems;

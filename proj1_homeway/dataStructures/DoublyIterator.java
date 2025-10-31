@@ -12,7 +12,7 @@ class DoublyIterator<E> implements Iterator<E> {
     /**
      * Node with the first element in the iteration.
      */
-    private DoublyListNode<E> firstNode;
+    private final DoublyListNode<E> firstNode;
 
     /**
      * Node with the next element in the iteration.
@@ -35,6 +35,7 @@ class DoublyIterator<E> implements Iterator<E> {
      * @return the next element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
+    @Override
     public E next(){
         if(!this.hasNext()) throw new NoSuchElementException();
 
@@ -47,6 +48,7 @@ class DoublyIterator<E> implements Iterator<E> {
     /**
      * Restart the iterator
      */
+    @Override
     public void rewind() {
         nextToReturn = firstNode;
     }
@@ -55,6 +57,7 @@ class DoublyIterator<E> implements Iterator<E> {
      * rather than throwing an exception.
      * @return true iff the iteration has more elements
      */
+    @Override
     public boolean hasNext( ) {
         return nextToReturn != null;
     }

@@ -7,16 +7,14 @@ package classes.students;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import dataStructures.List;
-import enums.ServiceType;
 import enums.StudentType;
-import interfaces.LeisureService;
 import interfaces.LodgingService;
 import interfaces.OutgoingStudent;
 import interfaces.Service;
 
 public class OutgoingClass extends StudentClass implements OutgoingStudent {
 
-  private List<Service> servicesVisisted;
+  private final List<Service> servicesVisisted;
 
   public OutgoingClass(StudentType type, String studentName, String country, LodgingService homeName) {
     super(type, studentName, country, homeName);

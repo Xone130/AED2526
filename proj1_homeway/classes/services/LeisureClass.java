@@ -9,7 +9,7 @@ import interfaces.LeisureService;
 
 public class LeisureClass extends ServiceClass implements LeisureService  {
 
-  private int discount;
+  private final int discount;
 
   public LeisureClass(ServiceType type, long latitude, long longitude, int price, int value, String serviceName) {
     super(type, latitude, longitude, price, value, serviceName);

@@ -14,9 +14,10 @@ import dataStructures.*;
 import enums.ServiceType;
 import enums.StudentType;
 import interfaces.*;
+import java.io.Serializable;
 import records.Evaluation;
 
-public class AreaClass implements Area {
+public class AreaClass implements Area, Serializable {
 
   private static final long serialVersionUID = 0L;
 
@@ -26,12 +27,11 @@ public class AreaClass implements Area {
   private final long bottom;
   private final long right;
 
-  private List<Service> servicesInThisArea;
-  private List<Student> studentsInThisArea;
-  private SortedList<Student> studentsByAlphabet;
+  private final List<Service> servicesInThisArea;
+  private final List<Student> studentsInThisArea;
+  private final SortedList<Student> studentsByAlphabet;
 
-  private SortedList<Service> servicesByPrice;
-  private SortedList<Service> servicesByAverage;
+  private final SortedList<Service> servicesByAverage;
 
   public AreaClass(long top, long left, long bottom, long right, String areaName){
     this.areaName = areaName;
@@ -210,8 +210,7 @@ public class AreaClass implements Area {
 
   @Override
   public boolean isPointInsideBounds(long latitude, long longitude) {
-    return latitude >= bottom && latitude <= top &&
-    longitude >= left && longitude <= right;
+    return (longitude >= left && longitude <= right && latitude >= bottom && latitude <= top);
   }
 
   @Override
@@ -404,7 +403,8 @@ public class AreaClass implements Area {
   }
 
   private Service findCheapestService(ServiceType type) {
-    Iterator<Service> services = servicesInThisArea.iterator();
+    Predicate<Service> typeFilter = service -> service.getType() == type ;
+    FilterIterator<Service> services = new FilterIterator<>(servicesInThisArea.iterator(), typeFilter);
     
     Service cheapest = services.next();
     Service current;

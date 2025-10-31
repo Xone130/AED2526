@@ -82,9 +82,9 @@ public class HomewaySystemClass implements HomeWaySystem {
     String serviceName) throws InvalidLocationException, InvalidPriceException, InvalidDiscountException,
     InvalidCapacityException, ServiceExistsException {
 
-      if(currentArea.isPointInsideBounds(latitude, longitude)) throw new InvalidLocationException();
+      if(!currentArea.isPointInsideBounds(latitude, longitude)) throw new InvalidLocationException();
       if(price <= 0) throw new InvalidPriceException();
-      if(value > 100 || ( type == ServiceType.LEISURE && value < 0) ) throw new InvalidDiscountException();
+      if (type == ServiceType.LEISURE) if(value > 100 || value < 0) throw new InvalidDiscountException();
       if( (type == ServiceType.EATING || type == ServiceType.LODGING ) && value <= 0) throw new InvalidCapacityException();
       if(currentArea.hasService(serviceName)) throw new ServiceExistsException();
 
@@ -231,6 +231,7 @@ public class HomewaySystemClass implements HomeWaySystem {
    */
   private boolean areaExists(String areaName) {
     String fileName = areaName.replace(" ", "_") + ".ser";
+
     File file = new File(fileName);
     return file.exists();
   }

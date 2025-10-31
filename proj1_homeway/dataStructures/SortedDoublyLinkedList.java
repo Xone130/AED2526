@@ -41,6 +41,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * Returns true iff the list contains no elements.
      * @return true if list is empty
      */
+    @Override
     public boolean isEmpty() {
         return currentSize == 0;
     }
@@ -49,7 +50,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * Returns the number of elements in the list.
      * @return number of elements in the list
      */
-
+    @Override
     public int size() {
         return currentSize;
     }
@@ -58,6 +59,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * Returns an iterator of the elements in the list (in proper sequence).
      * @return Iterator of the elements in the list
      */
+    @Override
     public Iterator<E> iterator() {
         return new DoublyIterator<>(head);
     }
@@ -67,6 +69,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getMin( ) {
         if(currentSize == 0) throw new NoSuchElementException();
         return head.getElement();
@@ -77,6 +80,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E getMax( ) {
         if(currentSize == 0) throw new NoSuchElementException();
         return tail.getElement();
@@ -85,6 +89,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * Returns the first occurrence of the element equals to the given element in the list.
      * @return element in the list or null
      */
+    @Override
     public E get(E element) {
         return getEl(element);
     }
@@ -95,6 +100,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * @param element to be found
      * @return true iff the element exists in the list.
      */
+    @Override
     public boolean contains(E element) {
         return getEl(element) != null;
     }
@@ -104,6 +110,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * If there is an equal element, the new element is inserted after it.
      * @param element to be inserted
      */
+    @Override
     public void add(E element) {
         DoublyListNode<E> node = new DoublyListNode<>(element);
 
@@ -141,13 +148,14 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      * Removes and returns the first occurrence of the element equals to the given element in the list.
      * @return element removed from the list or null if !belongs(element)
      */
+    @Override
     public E remove(E element) {
         DoublyListNode<E> node = getNode(element);
         if(node == null) return null;
         E el = node.getElement(); //assumes uses of contains before
 
         if(currentSize == 1){ 
-            node = head = tail = null;
+            head = tail = null;
         }else{
             if(node == head){ 
             head = node.getNext();

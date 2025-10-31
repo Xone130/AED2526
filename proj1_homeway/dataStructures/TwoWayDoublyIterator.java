@@ -27,6 +27,8 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @param first - Node with the first element of the iteration
      * @param last  - Node with the last element of the iteration
      */
+    
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TwoWayDoublyIterator(DoublyListNode<E> first, DoublyListNode<E> last) {
         super(first);
         this.lastNode = last;

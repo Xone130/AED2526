@@ -43,6 +43,7 @@ public class FilterIterator<E> implements Iterator<E> {
      *
      * @return true iff the iteration has more elements
      */
+    @Override
     public boolean hasNext() {
         return nextToReturn != null;
     }
@@ -53,6 +54,7 @@ public class FilterIterator<E> implements Iterator<E> {
      * @return the next element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
+    @Override
     public E next() {
         if(!this.hasNext()) throw new NoSuchElementException();
 
@@ -66,6 +68,7 @@ public class FilterIterator<E> implements Iterator<E> {
      * Restarts the iteration.
      * After rewind, if the iteration is not empty, next will return the first element.
      */
+    @Override
     public void rewind() {
         iterator.rewind();
         advanceNext();

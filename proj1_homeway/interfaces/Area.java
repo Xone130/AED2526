@@ -165,8 +165,8 @@ public interface Area extends Serializable {
   /**
    * public helper method. 
    * checks if  the point is inside the bounds 
-   * @param latitude
-   * @param longitude
+   * @param latitude latitude 
+   * @param longitude longitude
    * @return true if the point is inside the bounds 
    */
   public boolean isPointInsideBounds(long latitude, long longitude);

@@ -188,6 +188,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element  - element to be inserted
      * @throws InvalidPositionException - if position is not valid in the list
      */
+    @Override
     public void add(int position, E element) {
         if (position < 0 || position > currentSize) throw new InvalidPositionException();
         else if (position == 0) this.addFirst(element);
@@ -202,6 +203,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return element removed from the first position of the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E removeFirst() {
         if(this.isEmpty()) throw new NoSuchElementException();
 
@@ -221,6 +223,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return element removed from the last position of the list
      * @throws NoSuchElementException - if size() == 0
      */
+    @Override
     public E removeLast() {
         if(this.isEmpty()) throw new NoSuchElementException();
         if(size() == 1) return removeFirst();
@@ -243,7 +246,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return element removed at position
      * @throws InvalidPositionException - if position is not valid in the list
      */
-    
+    @Override
     public E remove(int position) {
         if(position < 0 || position > currentSize - 1) throw new InvalidPositionException();
         if(position == 0) return removeFirst();

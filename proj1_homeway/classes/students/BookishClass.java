@@ -16,7 +16,7 @@ import interfaces.Service;
 
 public class BookishClass extends StudentClass implements BookishStudent {
 
-  private List<Service> leisuresVisisted;
+  private final List<Service> leisuresVisisted;
 
   public BookishClass(StudentType type, String studentName, String country, LodgingService home) {
     super(type, studentName, country, home);
